@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Human Substrate — Who Carries This (v2)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Capacity-to-capacity links */
+        .link-capacity {
+            stroke: #334155;
+            stroke-opacity: 0.15;
+            fill: none;
+            transition: stroke-opacity 0.3s ease, stroke 0.3s ease;
+        }
+
+        .link-capacity.highlighted {
+            stroke-opacity: 0.8;
+            stroke: #fbbf24;
+        }
+
+        .link-capacity.reinforces { stroke: #3b82f6; }
+        .link-capacity.enables { stroke: #22c55e; }
+        .link-capacity.tensions { stroke: #ef4444; }
+        .link-capacity.composed-of { stroke: #a855f7; }
+        .link-capacity.co-occurs { stroke: #f59e0b; }
+        .link-capacity.requires { stroke: #14b8a6; }
+        .link-capacity.drives { stroke: #f97316; }
+        .link-capacity.feeds { stroke: #0ea5e9; }
+        .link-capacity.supports { stroke: #10b981; }
+        .link-capacity.balances { stroke: #6b7280; }
+
+        .link-capacity.highlighted.reinforces { stroke: #3b82f6; }
+        .link-capacity.highlighted.enables { stroke: #22c55e; }
+        .link-capacity.highlighted.tensions { stroke: #ef4444; }
+
+        /* Role connection lines */
+        .role-line {
+            stroke: #fbbf24;
+            stroke-width: 1.5;
+            stroke-dasharray: 4, 4;
+            stroke-opacity: 0;
+            fill: none;
+            transition: stroke-opacity 0.4s ease;
+        }
+
+        .role-line.visible {
+            stroke-opacity: 0.6;
+        }
+
+        /* Role labels at line endpoints */
+        .role-label {
+            font-size: 11px;
+            font-weight: 500;
+            fill: #fbbf24;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            text-anchor: middle;
+        }
+
+        .role-label.visible {
+            opacity: 1;
+        }
+
+        .role-label-bg {
+            fill: #0a0a0f;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .role-label-bg.visible {
+            opacity: 0.85;
+        }
+
+        /* Capacity nodes */
+        .node-capacity {
+            cursor: pointer;
+        }
+
+        .node-capacity circle {
+            stroke: rgba(255,255,255,0.15);
+            stroke-width: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .node-capacity:hover circle {
+            stroke: rgba(255,255,255,0.5);
+            filter: brightness(1.15);
+        }
+
+        .node-capacity.selected circle {
+            stroke: #fbbf24;
+            stroke-width: 3px;
+            filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.5));
+        }
+
+        .node-capacity.dragging circle {
+            stroke: #fbbf24;
+            stroke-width: 3px;
+        }
+
+        .node-capacity.connected circle {
+            stroke: rgba(251, 191, 36, 0.6);
+            stroke-width: 2.5px;
+        }
+
+        .node-capacity.faded circle {
+            opacity: 0.3;
+        }
+
+        .node-capacity.faded text {
+            opacity: 0.3;
+        }
+
+        .node-capacity text {
+            font-size: 11px;
+            font-weight: 500;
+            fill: #e2e8f0;
+            pointer-events: none;
+            text-anchor: middle;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Cluster colors */
+        .cluster-Meaning circle { fill: #6366f1; }
+        .cluster-Persuasion circle { fill: #f59e0b; }
+        .cluster-Social circle { fill: #10b981; }
+        .cluster-Culture circle { fill: #ec4899; }
+        .cluster-Emotion circle { fill: #ef4444; }
+        .cluster-Judgment circle { fill: #8b5cf6; }
+        .cluster-Cognition circle { fill: #06b6d4; }
+
+        /* Header */
+        #header {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 10;
+        }
+
+        #header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 4px;
+        }
+
+        #header p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Info panel - simplified */
+        #info-panel {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 300px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 18px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+        }
+
+        #info-panel.visible {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        #info-panel h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 4px;
+        }
+
+        #info-panel .cluster-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        #info-panel .tooltip {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        #info-panel .value {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        #info-panel .section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        #info-panel .micro-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        #info-panel .micro-item {
+            font-size: 10px;
+            padding: 3px 7px;
+            background: #334155;
+            border-radius: 3px;
+            color: #94a3b8;
+        }
+
+        /* Legend */
+        #legend {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid #334155;
+            padding: 14px 18px;
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+        }
+
+        #legend h3 {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Instructions */
+        #instructions {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        #instructions strong {
+            color: #fbbf24;
+        }
+
+        /* Drag indicator */
+        #drag-hint {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #fbbf24;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        #drag-hint.visible {
+            opacity: 1;
+        }
+
+        /* Stats */
+        #stats {
+            position: absolute;
+            top: 80px;
+            left: 24px;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        #stats span {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        #stats .count {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <svg id="graph"></svg>
+
+        <div id="header">
+            <h1>The Human Substrate</h1>
+            <p>Click a capacity to see who carries it</p>
+        </div>
+
+        <div id="stats">
+            <span><span class="count">28</span> capacities</span>
+            <span><span class="count">73</span> roles</span>
+        </div>
+
+        <div id="info-panel">
+            <h2 id="node-title"></h2>
+            <span id="cluster-badge" class="cluster-badge"></span>
+            <p id="node-tooltip" class="tooltip"></p>
+            <div id="node-value" class="value"></div>
+            <div id="micro-section">
+                <div class="section-title">Includes</div>
+                <div id="micro-list" class="micro-list"></div>
+            </div>
+        </div>
+
+        <div id="legend">
+            <h3>Clusters</h3>
+            <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Meaning</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Persuasion</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Social</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div>Culture</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Emotion</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Judgment</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div>Cognition</div>
+        </div>
+
+        <div id="instructions">
+            <strong>Click</strong> a capacity to reveal who carries it · <strong>Drag</strong> to see what depends on it
+        </div>
+
+        <div id="drag-hint">← Dependencies pulling back →</div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA
+        // ============================================
+        const capacityNodes = [
+            // MEANING
+            { id: "nuance", label: "Nuance", cluster: "Meaning",
+              tooltip: "Meaning that rides between words.",
+              micro: ["hedging", "qualifiers", "softening", "calibration"],
+              value: "Makes outputs feel human, careful, trustworthy.",
+              roles: ["Editors", "Diplomats", "Therapists", "Translators", "Poets"] },
+            { id: "subtext", label: "Subtext", cluster: "Meaning",
+              tooltip: "What's implied but not spoken.",
+              micro: ["implication", "double meaning", "strategic omission"],
+              value: "Adds realism + persuasive power without explicit claims.",
+              roles: ["Screenwriters", "Negotiators", "Satirists", "Intelligence Analysts"] },
+            { id: "irony", label: "Irony", cluster: "Meaning",
+              tooltip: "Saying one thing while meaning another.",
+              micro: ["contrast", "deadpan", "layered intent"],
+              value: "Signals intelligence, belonging, sophistication.",
+              roles: ["Comedians", "Critics", "Literary Authors", "Cartoonists"] },
+            { id: "hedging", label: "Hedging", cluster: "Meaning",
+              tooltip: "Soft certainty when reality is messy.",
+              micro: ["maybe", "depends", "in many cases"],
+              value: "Reduces liability; increases believability.",
+              roles: ["Lawyers", "Scientists", "Risk Analysts", "Doctors"] },
+
+            // PERSUASION
+            { id: "framing", label: "Framing", cluster: "Persuasion",
+              tooltip: "The angle that changes interpretation.",
+              micro: ["problem definition", "salience", "spotlight/ignore"],
+              value: "Drives decisions; converts attention into action.",
+              roles: ["Journalists", "Politicians", "Marketers", "Documentary Makers"] },
+            { id: "authority", label: "Authority Cues", cluster: "Persuasion",
+              tooltip: "Signals that trigger deference.",
+              micro: ["certainty voice", "credentialing", "directive phrasing"],
+              value: "Increases compliance, sales, leadership impact.",
+              roles: ["Executives", "Professors", "Surgeons", "Judges"] },
+            { id: "socialproof", label: "Social Proof", cluster: "Persuasion",
+              tooltip: "'People like you do this.'",
+              micro: ["norms", "testimonials", "bandwagon logic"],
+              value: "Turns uncertainty into purchase/participation.",
+              roles: ["Marketers", "Influencers", "Community Organizers", "Salespeople"] },
+
+            // SOCIAL
+            { id: "trust", label: "Trust", cluster: "Social",
+              tooltip: "How humans decide 'safe, real, reliable.'",
+              micro: ["consistency", "care signals", "truthfulness tone"],
+              value: "The adoption gate. Without trust, nothing scales.",
+              roles: ["Teachers", "Nurses", "Primary Care Doctors", "Clergy", "Parents"] },
+            { id: "politeness", label: "Politeness", cluster: "Social",
+              tooltip: "How we ask without demanding.",
+              micro: ["indirect requests", "deference", "softeners"],
+              value: "Reduces friction; increases retention and satisfaction.",
+              roles: ["Hospitality Workers", "Customer Service", "Diplomats", "Admin Staff"] },
+            { id: "facesaving", label: "Face-Saving", cluster: "Social",
+              tooltip: "Protecting dignity in conversation.",
+              micro: ["tact", "exit ramps", "non-accusatory phrasing"],
+              value: "Keeps relationships intact; prevents escalation.",
+              roles: ["HR Professionals", "Mediators", "Managers", "Family Therapists"] },
+            { id: "status", label: "Status", cluster: "Social",
+              tooltip: "Hierarchy signals in language.",
+              micro: ["command tone", "formality", "confidence theater"],
+              value: "Creates influence; shapes obedience and authority.",
+              roles: ["Executives", "Military Officers", "Judges", "Ceremonial Officials"] },
+
+            // CULTURE
+            { id: "belonging", label: "Belonging", cluster: "Culture",
+              tooltip: "Signals of 'us' and 'them.'",
+              micro: ["in-group phrases", "references", "shared humor"],
+              value: "Builds communities and brands; fuels loyalty.",
+              roles: ["Community Organizers", "Coaches", "Club Leaders", "Brand Managers"] },
+            { id: "memegrammar", label: "Meme Grammar", cluster: "Culture",
+              tooltip: "The syntax of culture in motion.",
+              micro: ["remix templates", "caption logic", "call-response"],
+              value: "Makes outputs feel current; drives engagement.",
+              roles: ["Social Media Managers", "Content Creators", "Youth Workers"] },
+            { id: "idioms", label: "Idioms", cluster: "Culture",
+              tooltip: "Compressed cultural memory.",
+              micro: ["figures of speech", "local sayings", "metaphor shortcuts"],
+              value: "Creates fluency; boosts perceived intelligence.",
+              roles: ["Translators", "Language Teachers", "Local Journalists", "Elders"] },
+            { id: "taboos", label: "Taboos", cluster: "Culture",
+              tooltip: "What not to say, and how we avoid it.",
+              micro: ["euphemism", "avoidance", "coded language"],
+              value: "Controls risk and PR; prevents social backlash.",
+              roles: ["Editors", "PR Professionals", "Compliance Officers"] },
+            { id: "humor", label: "Humor", cluster: "Culture",
+              tooltip: "Bonding via surprise + timing.",
+              micro: ["incongruity", "timing", "misdirection"],
+              value: "Attention + memorability. Brands pay for this.",
+              roles: ["Comedians", "Writers", "Entertainers", "Camp Counselors"] },
+            { id: "freshness", label: "Cultural Freshness", cluster: "Culture",
+              tooltip: "Staying aligned with the moving present.",
+              micro: ["slang drift", "new events", "norm shifts"],
+              value: "Keeps outputs relevant; prevents 'stale model' feel.",
+              roles: ["Trend Forecasters", "Journalists", "Youth Workers", "DJs"] },
+
+            // EMOTION
+            { id: "empathy", label: "Empathy", cluster: "Emotion",
+              tooltip: "Recognizing and responding to feelings.",
+              micro: ["validation", "tone matching", "care language"],
+              value: "Transforms 'answering' into 'helping.'",
+              roles: ["Therapists", "Nurses", "Social Workers", "Counselors", "Caregivers"] },
+            { id: "grief", label: "Grief Language", cluster: "Emotion",
+              tooltip: "How humans speak loss.",
+              micro: ["gentle pacing", "non-fixing", "witnessing"],
+              value: "Human authenticity. Hard to fake without training.",
+              roles: ["Hospice Workers", "Funeral Directors", "Chaplains", "Grief Counselors"] },
+            { id: "hope", label: "Hope", cluster: "Emotion",
+              tooltip: "Future-making in words.",
+              micro: ["reframe", "possibility", "small next steps"],
+              value: "Motivates action; increases resilience.",
+              roles: ["Coaches", "Therapists", "Teachers", "Activists", "Religious Leaders"] },
+            { id: "shame", label: "Shame", cluster: "Emotion",
+              tooltip: "Threat to belonging; triggers concealment.",
+              micro: ["defensiveness", "minimization", "silence cues"],
+              value: "Key to persuasion ethics and harm prevention.",
+              roles: ["Therapists", "Ethicists", "Restorative Justice Workers"] },
+            { id: "angercontrol", label: "De-escalation", cluster: "Emotion",
+              tooltip: "Reducing heat without surrender.",
+              micro: ["acknowledge", "slow pace", "offer options"],
+              value: "Prevents conflict; vital in support and moderation.",
+              roles: ["Moderators", "Crisis Counselors", "Hostage Negotiators", "ER Nurses"] },
+
+            // JUDGMENT
+            { id: "taste", label: "Taste", cluster: "Judgment",
+              tooltip: "Aesthetic judgment without explicit rules.",
+              micro: ["restraint", "coherence", "delight calibration"],
+              value: "The premium layer: what feels 'right.'",
+              roles: ["Curators", "Editors", "Designers", "Art Directors", "Critics"] },
+            { id: "clarity", label: "Clarity", cluster: "Judgment",
+              tooltip: "Making meaning easy to grasp.",
+              micro: ["structure", "sequencing", "signal-to-noise"],
+              value: "Directly improves adoption and comprehension.",
+              roles: ["Technical Writers", "Teachers", "Explainer Journalists", "UX Writers"] },
+            { id: "timing", label: "Timing", cluster: "Judgment",
+              tooltip: "When to land the point.",
+              micro: ["pacing", "reveal order", "breathing room"],
+              value: "Turns content into impact.",
+              roles: ["Comedians", "Directors", "Traders", "Public Speakers", "DJs"] },
+
+            // COGNITION
+            { id: "commonSense", label: "Common Sense", cluster: "Cognition",
+              tooltip: "Unspoken defaults about the world.",
+              micro: ["everyday causality", "social expectations", "normalcy"],
+              value: "Prevents outputs from feeling alien.",
+              roles: ["Parents", "Teachers", "Mentors", "Community Elders", "Grandparents"] },
+            { id: "analogy", label: "Analogy", cluster: "Cognition",
+              tooltip: "Mapping one domain onto another.",
+              micro: ["metaphor", "transfer learning", "teaching moves"],
+              value: "Explains hard things fast; boosts persuasion.",
+              roles: ["Teachers", "Science Communicators", "Coaches", "Writers"] },
+            { id: "synthesis", label: "Synthesis", cluster: "Cognition",
+              tooltip: "Combining fragments into a coherent whole.",
+              micro: ["prioritizing", "compressing", "patterning"],
+              value: "Creates 'insight'—high monetary value.",
+              roles: ["Researchers", "Analysts", "Investigative Journalists", "Consultants"] }
+        ];
+
+        const capacityLinks = [
+            { source: "nuance", target: "hedging", type: "composed-of" },
+            { source: "nuance", target: "politeness", type: "reinforces" },
+            { source: "nuance", target: "trust", type: "reinforces" },
+            { source: "subtext", target: "irony", type: "co-occurs" },
+            { source: "subtext", target: "framing", type: "enables" },
+            { source: "authority", target: "status", type: "co-occurs" },
+            { source: "authority", target: "trust", type: "tensions" },
+            { source: "socialproof", target: "belonging", type: "reinforces" },
+            { source: "framing", target: "socialproof", type: "reinforces" },
+            { source: "politeness", target: "facesaving", type: "reinforces" },
+            { source: "facesaving", target: "angercontrol", type: "reinforces" },
+            { source: "empathy", target: "trust", type: "reinforces" },
+            { source: "empathy", target: "grief", type: "enables" },
+            { source: "shame", target: "facesaving", type: "reinforces" },
+            { source: "humor", target: "timing", type: "requires" },
+            { source: "humor", target: "belonging", type: "reinforces" },
+            { source: "memegrammar", target: "humor", type: "co-occurs" },
+            { source: "idioms", target: "commonSense", type: "reinforces" },
+            { source: "taboos", target: "facesaving", type: "drives" },
+            { source: "freshness", target: "memegrammar", type: "feeds" },
+            { source: "taste", target: "clarity", type: "balances" },
+            { source: "clarity", target: "trust", type: "reinforces" },
+            { source: "timing", target: "framing", type: "reinforces" },
+            { source: "analogy", target: "synthesis", type: "reinforces" },
+            { source: "commonSense", target: "trust", type: "supports" },
+            { source: "synthesis", target: "clarity", type: "enables" }
+        ];
+
+        // ============================================
+        // Setup
+        // ============================================
+        const clusterCenters = {
+            'Meaning': { x: 0.18, y: 0.28 },
+            'Persuasion': { x: 0.5, y: 0.12 },
+            'Social': { x: 0.82, y: 0.28 },
+            'Culture': { x: 0.15, y: 0.72 },
+            'Emotion': { x: 0.5, y: 0.88 },
+            'Judgment': { x: 0.85, y: 0.72 },
+            'Cognition': { x: 0.5, y: 0.5 }
+        };
+
+        const clusterColors = {
+            'Meaning': '#6366f1',
+            'Persuasion': '#f59e0b',
+            'Social': '#10b981',
+            'Culture': '#ec4899',
+            'Emotion': '#ef4444',
+            'Judgment': '#8b5cf6',
+            'Cognition': '#06b6d4'
+        };
+
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const svg = d3.select('#graph')
+            .attr('width', width)
+            .attr('height', height);
+
+        // Groups for layering
+        const linkGroup = svg.append('g').attr('class', 'capacity-links');
+        const roleLineGroup = svg.append('g').attr('class', 'role-lines');
+        const roleLabelGroup = svg.append('g').attr('class', 'role-labels');
+        const nodeGroup = svg.append('g').attr('class', 'capacity-nodes');
+
+        // Initialize positions
+        capacityNodes.forEach(node => {
+            const center = clusterCenters[node.cluster];
+            node.x = center.x * width + (Math.random() - 0.5) * 80;
+            node.y = center.y * height + (Math.random() - 0.5) * 80;
+        });
+
+        // ============================================
+        // Simulation
+        // ============================================
+        const simulation = d3.forceSimulation(capacityNodes)
+            .force('link', d3.forceLink(capacityLinks).id(d => d.id).distance(100).strength(0.4))
+            .force('charge', d3.forceManyBody().strength(-350))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(40))
+            .force('x', d3.forceX(d => clusterCenters[d.cluster].x * width).strength(0.08))
+            .force('y', d3.forceY(d => clusterCenters[d.cluster].y * height).strength(0.08));
+
+        // ============================================
+        // Draw capacity links
+        // ============================================
+        const linkElements = linkGroup.selectAll('line')
+            .data(capacityLinks)
+            .join('line')
+            .attr('class', d => `link-capacity ${d.type}`)
+            .attr('stroke-width', 1.5);
+
+        // ============================================
+        // Draw capacity nodes
+        // ============================================
+        const nodeElements = nodeGroup.selectAll('g')
+            .data(capacityNodes)
+            .join('g')
+            .attr('class', d => `node-capacity cluster-${d.cluster}`)
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
+
+        nodeElements.append('circle')
+            .attr('r', 24);
+
+        nodeElements.append('text')
+            .attr('dy', 42)
+            .text(d => d.label);
+
+        // ============================================
+        // Role display system
+        // ============================================
+        let selectedNode = null;
+        let roleElements = { lines: [], labels: [], bgs: [] };
+
+        function showRolesForCapacity(capacity) {
+            hideRoles();
+            selectedNode = capacity;
+
+            const roles = capacity.roles;
+            const numRoles = roles.length;
+            const baseRadius = 120;
+
+            roles.forEach((role, i) => {
+                const angle = (i / numRoles) * Math.PI * 2 - Math.PI / 2;
+                const radius = baseRadius + (i % 2) * 25;
+                const x = capacity.x + Math.cos(angle) * radius;
+                const y = capacity.y + Math.sin(angle) * radius;
+
+                // Line from capacity to role position
+                const line = roleLineGroup.append('line')
+                    .attr('class', 'role-line')
+                    .attr('x1', capacity.x)
+                    .attr('y1', capacity.y)
+                    .attr('x2', x)
+                    .attr('y2', y)
+                    .attr('data-role', role);
+
+                // Background for label
+                const textWidth = role.length * 7 + 16;
+                const bg = roleLabelGroup.append('rect')
+                    .attr('class', 'role-label-bg')
+                    .attr('x', x - textWidth / 2)
+                    .attr('y', y - 10)
+                    .attr('width', textWidth)
+                    .attr('height', 20)
+                    .attr('rx', 10)
+                    .attr('data-role', role);
+
+                // Label at end of line
+                const label = roleLabelGroup.append('text')
+                    .attr('class', 'role-label')
+                    .attr('x', x)
+                    .attr('y', y + 4)
+                    .text(role)
+                    .attr('data-role', role);
+
+                roleElements.lines.push(line);
+                roleElements.bgs.push(bg);
+                roleElements.labels.push(label);
+
+                // Animate in
+                setTimeout(() => {
+                    line.classed('visible', true);
+                    bg.classed('visible', true);
+                    label.classed('visible', true);
+                }, i * 50);
+            });
+
+            // Highlight connected capacities
+            nodeElements.classed('selected', d => d.id === capacity.id);
+
+            const connectedIds = new Set();
+            capacityLinks.forEach(link => {
+                if (link.source.id === capacity.id) connectedIds.add(link.target.id);
+                if (link.target.id === capacity.id) connectedIds.add(link.source.id);
+            });
+
+            nodeElements.classed('connected', d => connectedIds.has(d.id));
+            nodeElements.classed('faded', d => d.id !== capacity.id && !connectedIds.has(d.id));
+
+            linkElements.classed('highlighted', d =>
+                d.source.id === capacity.id || d.target.id === capacity.id
+            );
+        }
+
+        function hideRoles() {
+            roleElements.lines.forEach(el => el.remove());
+            roleElements.labels.forEach(el => el.remove());
+            roleElements.bgs.forEach(el => el.remove());
+            roleElements = { lines: [], labels: [], bgs: [] };
+
+            nodeElements.classed('selected', false);
+            nodeElements.classed('connected', false);
+            nodeElements.classed('faded', false);
+            linkElements.classed('highlighted', false);
+            selectedNode = null;
+        }
+
+        function updateRolePositions() {
+            if (!selectedNode) return;
+
+            const capacity = selectedNode;
+            const roles = capacity.roles;
+            const numRoles = roles.length;
+            const baseRadius = 120;
+
+            roles.forEach((role, i) => {
+                const angle = (i / numRoles) * Math.PI * 2 - Math.PI / 2;
+                const radius = baseRadius + (i % 2) * 25;
+                const x = capacity.x + Math.cos(angle) * radius;
+                const y = capacity.y + Math.sin(angle) * radius;
+
+                const textWidth = role.length * 7 + 16;
+
+                roleElements.lines[i]
+                    .attr('x1', capacity.x)
+                    .attr('y1', capacity.y)
+                    .attr('x2', x)
+                    .attr('y2', y);
+
+                roleElements.bgs[i]
+                    .attr('x', x - textWidth / 2)
+                    .attr('y', y - 10);
+
+                roleElements.labels[i]
+                    .attr('x', x)
+                    .attr('y', y + 4);
+            });
+        }
+
+        // ============================================
+        // Click handlers
+        // ============================================
+        nodeElements.on('click', (event, d) => {
+            event.stopPropagation();
+            showCapacityInfo(d);
+            showRolesForCapacity(d);
+        });
+
+        svg.on('click', () => {
+            hideRoles();
+            document.getElementById('info-panel').classList.remove('visible');
+        });
+
+        // ============================================
+        // Info panel
+        // ============================================
+        function showCapacityInfo(d) {
+            document.getElementById('node-title').textContent = d.label;
+            const badge = document.getElementById('cluster-badge');
+            badge.textContent = d.cluster;
+            badge.style.background = clusterColors[d.cluster];
+            document.getElementById('node-tooltip').textContent = d.tooltip;
+            document.getElementById('node-value').textContent = d.value;
+
+            const microList = document.getElementById('micro-list');
+            microList.innerHTML = '';
+            d.micro.forEach(m => {
+                const span = document.createElement('span');
+                span.className = 'micro-item';
+                span.textContent = m;
+                microList.appendChild(span);
+            });
+
+            document.getElementById('info-panel').classList.add('visible');
+        }
+
+        // ============================================
+        // Drag with dependency highlighting
+        // ============================================
+        let isDragging = false;
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+            isDragging = true;
+
+            // Highlight connections while dragging
+            const connectedIds = new Set([d.id]);
+            capacityLinks.forEach(link => {
+                if (link.source.id === d.id) connectedIds.add(link.target.id);
+                if (link.target.id === d.id) connectedIds.add(link.source.id);
+            });
+
+            nodeElements.classed('dragging', node => node.id === d.id);
+            nodeElements.classed('connected', node => connectedIds.has(node.id) && node.id !== d.id);
+            nodeElements.classed('faded', node => !connectedIds.has(node.id));
+            linkElements.classed('highlighted', link =>
+                link.source.id === d.id || link.target.id === d.id
+            );
+
+            document.getElementById('drag-hint').classList.add('visible');
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+
+            if (selectedNode && selectedNode.id === d.id) {
+                updateRolePositions();
+            }
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+            isDragging = false;
+
+            nodeElements.classed('dragging', false);
+            document.getElementById('drag-hint').classList.remove('visible');
+
+            // If nothing selected, clear highlights
+            if (!selectedNode) {
+                nodeElements.classed('connected', false);
+                nodeElements.classed('faded', false);
+                linkElements.classed('highlighted', false);
+            } else {
+                // Restore selection state
+                showRolesForCapacity(selectedNode);
+            }
+        }
+
+        // ============================================
+        // Simulation tick
+        // ============================================
+        simulation.on('tick', () => {
+            linkElements
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+            nodeElements.attr('transform', d => `translate(${d.x},${d.y})`);
+
+            if (selectedNode) {
+                updateRolePositions();
+            }
+        });
+
+        // ============================================
+        // Resize handler
+        // ============================================
+        window.addEventListener('resize', () => {
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+            svg.attr('width', newWidth).attr('height', newHeight);
+            simulation.force('center', d3.forceCenter(newWidth / 2, newHeight / 2));
+            simulation.alpha(0.3).restart();
+        });
+    </script>
+</body>
+</html>

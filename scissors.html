@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Scissors</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7;
+    --surface-1: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --series-source: #2a78d6;  /* categorical slot 1 */
+    --series-draw:   #eb6834;  /* categorical slot 2 */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface-1: #1a1a19;
+      --text-primary: #f0efec;
+      --text-secondary: #c3c2b7;
+      --text-muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --border: rgba(255,255,255,0.10);
+      --series-source: #3987e5;
+      --series-draw:   #d95926;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255,255,255,0.10);
+    --series-source: #3987e5;
+    --series-draw:   #d95926;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 40px 16px 56px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  h1 {
+    font-size: 26px; font-weight: 500; letter-spacing: -0.01em;
+    margin: 10px 0 8px; line-height: 1.2;
+  }
+  .dek { font-size: 15px; line-height: 1.55; color: var(--text-secondary); max-width: 640px; }
+
+  .card {
+    margin-top: 28px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 20px 12px;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .swatch { width: 16px; height: 2px; border-radius: 1px; }
+
+  .chart { position: relative; width: 100%; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .tick { font-size: 11px; fill: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .direct { font-size: 12px; font-weight: 500; fill: var(--text-primary); }
+  .direct-sub { font-size: 11px; fill: var(--text-secondary); }
+  .note { font-size: 11px; fill: var(--text-muted); }
+
+  .tip {
+    position: absolute; pointer-events: none;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; font-size: 12px; line-height: 1.5;
+    color: var(--text-primary); box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    min-width: 200px; opacity: 0; transition: opacity 0.1s;
+  }
+  .tip .yr { font-weight: 600; margin-bottom: 4px; }
+  .tip .row { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+  .tip .row span:first-child { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tip .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .tip .val { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .tip .ctx { margin-top: 4px; color: var(--text-muted); font-size: 11px; }
+
+  .foot { margin-top: 20px; font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+  .foot p + p { margin-top: 8px; }
+  details { margin-top: 18px; font-size: 13px; }
+  summary { cursor: pointer; color: var(--text-secondary); }
+  table { border-collapse: collapse; margin-top: 10px; width: 100%; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--grid); font-size: 12px; }
+  th { color: var(--text-muted); font-weight: 500; }
+  td:nth-child(n+2), th:nth-child(n+2) { text-align: right; }
+  .sources { margin-top: 18px; font-size: 11px; line-height: 1.7; color: var(--text-muted); }
+  .sources a { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">The Human Substrate · Figure 1</div>
+  <h1>The Scissors: the draw rises, the Source falls</h1>
+  <p class="dek">Text taken to train the largest documented model each year, against the health of the human source it came from. Both are indexed to 2020&nbsp;=&nbsp;1. The widening gap is the cost no ledger records.</p>
+
+  <div class="card">
+    <div class="legend" aria-hidden="true">
+      <span><i class="swatch" style="background:var(--series-draw)"></i>Training data drawn (largest documented model)</span>
+      <span><i class="swatch" style="background:var(--series-source)"></i>Source index (4 measured proxies)</span>
+    </div>
+    <div class="chart" id="chart">
+      <svg id="svg" role="img" aria-labelledby="svgTitle svgDesc">
+        <title id="svgTitle">The Scissors: training data drawn versus the Source index, 2015–2025</title>
+        <desc id="svgDesc">Indexed to 2020 equals 1, log scale. Training data drawn rises from 1 in 2020 to about 120 in 2025. The Source index holds near 1 until 2022, then falls to 0.56 by 2025.</desc>
+      </svg>
+      <div class="tip" id="tip" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p><strong>Read it as a ratio, not a crossing.</strong> Both lines start at 1 in 2020 by construction, so where they meet means nothing. What matters is how far apart they move. By 2025 the largest documented model trained on about 120 times the text GPT-3 did in 2020, drawn from a source measured at just over half its pre-LLM health.</p>
+    <p>Log scale: equal vertical steps are equal ratios, so a halving and a doubling read as the same size.</p>
+  </div>
+
+  <details>
+    <summary>Data table</summary>
+    <table id="tbl">
+      <thead><tr><th>Year</th><th>Model (draw)</th><th>Training tokens</th><th>Draw index</th><th>Source index</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </details>
+
+  <div class="sources">
+    <p><strong>Draw:</strong> publicly documented pretraining token counts for the largest disclosed model each year: GPT-3 (Brown et al., 2020); Gopher (Rae et al., 2021); Chinchilla (Hoffmann et al., 2022); Llama 2 (Touvron et al., 2023); Llama 3 (Meta, 2024); Qwen3 (Qwen Team, 2025). Closed frontier models do not disclose token counts, so this is a lower bound on what was drawn. For the long-run trend, see <a href="https://epoch.ai/publications/trends-in-training-dataset-sizes">Epoch AI, Trends in training dataset sizes</a>.</p>
+    <p><strong>Source:</strong> the Mater Source index, an equal-weight composite of Stack Overflow questions against their own pre-LLM trend, the <em>Consent in Crisis</em> audit (MIT Data Provenance Initiative), the human share of new web articles (Graphite / Common Crawl) and Wikipedia human pageviews (Wikimedia). Method and caveats: <a href="method.html" target="_blank" rel="noopener">How the Source index is built</a>.</p>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  { y: 2015, src: 0.99 },
+  { y: 2016, src: 1.00 },
+  { y: 2017, src: 1.00 },
+  { y: 2018, src: 1.00 },
+  { y: 2019, src: 1.00 },
+  { y: 2020, src: 1.00, model: 'GPT-3',      tok: 0.30 },
+  { y: 2021, src: 0.99, model: 'Gopher',     tok: 0.30 },
+  { y: 2022, src: 0.98, model: 'Chinchilla', tok: 1.4 },
+  { y: 2023, src: 0.79, model: 'Llama 2',    tok: 2.0 },
+  { y: 2024, src: 0.66, model: 'Llama 3',    tok: 15 },
+  { y: 2025, src: 0.56, model: 'Qwen3',      tok: 36 },
+];
+const BASE_TOK = 0.30;
+DATA.forEach(d => { if (d.tok != null) d.draw = d.tok / BASE_TOK; });
+
+const fmtIdx = v => v >= 10 ? Math.round(v) + '×' : v.toFixed(2);
+const fmtTok = t => t < 1 ? Math.round(t * 1000) + 'B' : t + 'T';
+
+// table view
+const tb = document.querySelector('#tbl tbody');
+DATA.forEach(d => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${d.y}</td><td>${d.model || '—'}</td><td>${d.tok != null ? fmtTok(d.tok) : '—'}</td>` +
+    `<td>${d.draw != null ? fmtIdx(d.draw) : '—'}</td><td>${d.src.toFixed(2)}</td>`;
+  tb.appendChild(tr);
+});
+
+const svg = document.getElementById('svg');
+const chartEl = document.getElementById('chart');
+const tip = document.getElementById('tip');
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs, parent) => {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  (parent || svg).appendChild(n);
+  return n;
+};
+
+function render() {
+  svg.querySelectorAll(':scope > :not(title):not(desc)').forEach(n => n.remove());
+  const W = chartEl.clientWidth;
+  const narrow = W < 560;
+  const H = narrow ? 340 : 420;
+  const M = { t: 16, r: narrow ? 92 : 150, b: 32, l: 40 };
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const X0 = 2015, X1 = 2025;
+  const LMIN = Math.log10(0.4), LMAX = Math.log10(200);
+  const x = yr => M.l + (yr - X0) / (X1 - X0) * iw;
+  const y = v => M.t + (1 - (Math.log10(v) - LMIN) / (LMAX - LMIN)) * ih;
+
+  // grid + ticks
+  [0.5, 1, 2, 5, 10, 20, 50, 100].forEach(v => {
+    el('line', { x1: M.l, x2: M.l + iw, y1: y(v), y2: y(v),
+      stroke: v === 1 ? 'var(--axis)' : 'var(--grid)', 'stroke-width': 1 });
+    const t = el('text', { x: M.l - 8, y: y(v) + 4, 'text-anchor': 'end', class: 'tick' });
+    t.textContent = v < 1 ? v : v + (v === 1 ? '' : '×');
+  });
+  for (let yr = X0; yr <= X1; yr++) {
+    if (narrow && yr % 2 === 0 && yr !== X1) continue;
+    const t = el('text', { x: x(yr), y: M.t + ih + 20, 'text-anchor': 'middle', class: 'tick' });
+    t.textContent = narrow ? "'" + String(yr).slice(2) : yr;
+  }
+
+  // ChatGPT marker
+  const cx = x(2022.9);
+  el('line', { x1: cx, x2: cx, y1: M.t, y2: M.t + ih, stroke: 'var(--axis)', 'stroke-width': 1, 'stroke-dasharray': '3 4' });
+  const ct = el('text', { x: cx - 6, y: M.t + 12, 'text-anchor': 'end', class: 'note' });
+  ct.textContent = 'ChatGPT, Nov 2022';
+
+  // lines
+  const path = (pts) => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const srcPts = DATA.map(d => [x(d.y), y(d.src)]);
+  const drawPts = DATA.filter(d => d.draw != null).map(d => [x(d.y), y(d.draw)]);
+  el('path', { d: path(srcPts), fill: 'none', stroke: 'var(--series-source)', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+  el('path', { d: path(drawPts), fill: 'none', stroke: 'var(--series-draw)', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+
+  // gap bracket at 2025
+  const gx = x(2025) + 10;
+  const last = DATA[DATA.length - 1];
+  el('line', { x1: gx, x2: gx, y1: y(last.draw) + 8, y2: y(last.src) - 8, stroke: 'var(--text-muted)', 'stroke-width': 1 });
+
+  // endpoints + direct labels
+  [[last.draw, 'var(--series-draw)', fmtIdx(last.draw) + ' drawn', 'Qwen3 · 36T tokens'],
+   [last.src, 'var(--series-source)', last.src.toFixed(2) + ' Source', 'measured index']].forEach(([v, col, a, b]) => {
+    el('circle', { cx: x(2025), cy: y(v), r: 4, fill: col, stroke: 'var(--surface-1)', 'stroke-width': 2 });
+    const t1 = el('text', { x: gx + 10, y: y(v) - 2, class: 'direct' }); t1.textContent = a;
+    if (!narrow) { const t2 = el('text', { x: gx + 10, y: y(v) + 13, class: 'direct-sub' }); t2.textContent = b; }
+  });
+  const gl = el('text', { x: gx + 10, y: (y(last.draw) + y(last.src)) / 2 + 4, class: 'note' });
+  gl.textContent = narrow ? 'the gap' : 'the gap: unrecorded';
+
+  // hover layer
+  const cross = el('line', { y1: M.t, y2: M.t + ih, stroke: 'var(--text-muted)', 'stroke-width': 1, opacity: 0 });
+  const hs = el('circle', { r: 4, fill: 'var(--series-source)', stroke: 'var(--surface-1)', 'stroke-width': 2, opacity: 0 });
+  const hd = el('circle', { r: 4, fill: 'var(--series-draw)', stroke: 'var(--surface-1)', 'stroke-width': 2, opacity: 0 });
+  const hit = el('rect', { x: M.l, y: M.t, width: iw + 12, height: ih, fill: 'transparent' });
+  const show = (clientX) => {
+    const r = svg.getBoundingClientRect();
+    const px = (clientX - r.left) * (W / r.width);
+    const yr = Math.round(X0 + (px - M.l) / iw * (X1 - X0));
+    const d = DATA.find(e => e.y === Math.max(X0, Math.min(X1, yr)));
+    const X = x(d.y);
+    cross.setAttribute('x1', X); cross.setAttribute('x2', X); cross.setAttribute('opacity', 1);
+    hs.setAttribute('cx', X); hs.setAttribute('cy', y(d.src)); hs.setAttribute('opacity', 1);
+    if (d.draw != null) { hd.setAttribute('cx', X); hd.setAttribute('cy', y(d.draw)); hd.setAttribute('opacity', 1); }
+    else hd.setAttribute('opacity', 0);
+    tip.innerHTML = `<div class="yr">${d.y}</div>` +
+      (d.draw != null
+        ? `<div class="row"><span><i class="dot" style="background:var(--series-draw)"></i>Drawn</span><span class="val">${fmtIdx(d.draw)}</span></div>`
+        : '') +
+      `<div class="row"><span><i class="dot" style="background:var(--series-source)"></i>Source</span><span class="val">${d.src.toFixed(2)}</span></div>` +
+      `<div class="ctx">${d.model ? d.model + ' · ' + fmtTok(d.tok) + ' tokens' : 'Before documented LLM training sets'}</div>`;
+    const sx = X * (r.width / W);
+    const tw = tip.offsetWidth || 210;
+    const left = sx > r.width * 0.55 ? sx - tw - 14 : sx + 14;
+    tip.style.left = Math.min(Math.max(0, left), r.width - tw) + 'px';
+    tip.style.top = (M.t * (r.width / W) + 8) + 'px';
+    tip.style.opacity = 1;
+  };
+  const hide = () => { [cross, hs, hd].forEach(n => n.setAttribute('opacity', 0)); tip.style.opacity = 0; };
+  hit.addEventListener('pointermove', e => show(e.clientX));
+  hit.addEventListener('pointerdown', e => show(e.clientX));
+  hit.addEventListener('pointerleave', hide);
+}
+render();
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 80); });
+</script>
+</body>
+</html>

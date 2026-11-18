@@ -47,153 +47,6 @@ body {
 }
 
 /* ============================================
-   COVER SCREEN
-   ============================================ */
-#cover {
-  position: fixed; inset: 0; z-index: 200;
-  background: var(--paper);
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  overflow: hidden;
-  transition: opacity 0.9s var(--ease-in-out), transform 0.9s var(--ease-in-out);
-}
-
-#cover.exit {
-  opacity: 0;
-  transform: scale(0.97);
-  pointer-events: none;
-}
-
-/* Cover grid cells */
-.cover-cell {
-  padding: 28px 32px;
-  border-right: var(--border);
-  border-bottom: var(--border);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
-  overflow: hidden;
-}
-.cover-cell:nth-child(3n) { border-right: none; }
-.cover-cell:nth-child(n+7) { border-bottom: none; }
-
-/* The void — center cell spanning */
-#void-cell {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: var(--border);
-  border-bottom: var(--border);
-  position: relative;
-  background: var(--paper);
-}
-
-.void-circle {
-  width: min(340px, 80%);
-  aspect-ratio: 1;
-  background: var(--void);
-  border-radius: 50%;
-  box-shadow:
-    0 0 80px 40px rgba(8,8,7,0.15),
-    0 0 160px 80px rgba(8,8,7,0.08);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.void-label {
-  position: absolute;
-  bottom: 28px;
-  left: 0; right: 0;
-  text-align: center;
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  line-height: 1;
-}
-
-/* Cover section titles */
-.cover-point {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: var(--ink-light);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.cover-title {
-  font-family: var(--font-display);
-  font-size: clamp(14px, 1.6vw, 19px);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  text-transform: uppercase;
-  line-height: 1.05;
-  margin-bottom: 8px;
-}
-
-.cover-excerpt {
-  font-family: var(--font-body);
-  font-size: 11px;
-  color: var(--ink-mid);
-  line-height: 1.5;
-  font-style: italic;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Author cell */
-#author-cell {
-  grid-column: 3;
-  grid-row: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 28px 32px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.author-name {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3.5vw, 42px);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  text-transform: uppercase;
-  align-self: flex-end;
-  line-height: 1;
-}
-
-/* Enter button */
-#enter-cover {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--void);
-  color: var(--paper);
-  border: none;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 12px 28px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-#enter-cover:hover { background: var(--ink-mid); }
-
-/* ============================================
    MAIN LAYOUT
    ============================================ */
 #main {
@@ -429,39 +282,6 @@ body {
   padding: 52px 48px 120px;
 }
 
-/* Letter header */
-#letter-head {
-  margin-bottom: 52px;
-  padding-bottom: 40px;
-  border-bottom: 2px solid var(--ink);
-}
-
-.letter-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--ink-light);
-  margin-bottom: 12px;
-}
-
-.letter-title {
-  font-family: var(--font-display);
-  font-size: clamp(42px, 6vw, 72px);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--black);
-  line-height: 0.92;
-  margin-bottom: 16px;
-}
-
-.letter-version {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: var(--ink-light);
-}
-
 /* Letter sections */
 .letter-section {
   margin-bottom: 52px;
@@ -671,13 +491,6 @@ body {
   #letter-scroll { padding: 32px 24px 80px; }
 }
 
-@media (max-width: 600px) {
-  #cover { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr 1fr; }
-  #void-cell { grid-column: 1 / 3; grid-row: 1 / 3; }
-  .cover-cell:nth-child(2n) { border-right: none; }
-  .cover-cell:nth-child(n+7) { border-bottom: var(--border); }
-  .cover-cell:last-child { border-bottom: none; }
-}
 
 /* Scroll fade-in */
 @keyframes fadeUp {
@@ -691,60 +504,6 @@ body {
 </style>
 </head>
 <body>
-
-<!-- ============================================
-     COVER
-     ============================================ -->
-<div id="cover">
-  <!-- Top row -->
-  <div class="cover-cell" data-section="unnamed">
-    <div class="cover-point">Point_01</div>
-    <div class="cover-title">An Unnamed Thing</div>
-    <div class="cover-excerpt">I heard Jordan Klepper on The Daily Show say to a guest — "They're stealing our IP!"</div>
-  </div>
-
-  <div id="void-cell">
-    <div class="void-circle"></div>
-    <div class="void-label">[the source]</div>
-  </div>
-
-  <div class="cover-cell" data-section="accounting">
-    <div class="cover-point">Point_03</div>
-    <div class="cover-title">The Accounting Gap</div>
-    <div class="cover-excerpt">It's like an oil company with no line item for oil.</div>
-  </div>
-
-  <!-- Middle row -->
-  <div class="cover-cell" data-section="missing">
-    <div class="cover-point">Point_06</div>
-    <div class="cover-title">The Missing Cause</div>
-    <div class="cover-excerpt">Every week brings another article about AI anxiety. Populist anger. Jobs shifting. Trust eroding.</div>
-  </div>
-
-  <!-- void-cell continues here -->
-
-  <div class="cover-cell" data-section="veil">
-    <div class="cover-point">Point_05</div>
-    <div class="cover-title">Piercing the Veil</div>
-    <div class="cover-excerpt">AI didn't violate intellectual property. It did something more fundamental. It went under it.</div>
-  </div>
-
-  <!-- Bottom row -->
-  <div class="cover-cell" data-section="chance">
-    <div class="cover-point">Point_07</div>
-    <div class="cover-title">An Evolutionary Moment</div>
-    <div class="cover-excerpt">For the first time in history, we have a system that runs on all of us, serves all of us.</div>
-  </div>
-
-  <div class="cover-cell" style="justify-content:center;align-items:center;border-bottom:none;">
-    <button id="enter-cover">Enter the letter →</button>
-  </div>
-
-  <div id="author-cell">
-    <div></div>
-    <div class="author-name">Mayhew</div>
-  </div>
-</div>
 
 <!-- ============================================
      MAIN
@@ -843,11 +602,6 @@ body {
     <div id="letter-panel">
       <div id="letter-scroll">
 
-        <div id="letter-head">
-          <div class="letter-eyebrow">Open Letter — February 2026</div>
-          <div class="letter-title">We Are<br>the Source</div>
-          <div class="letter-version">Version 2.6 · Scott Mayhew · Human Substrate Project</div>
-        </div>
 
         <!-- 01 -->
         <div class="letter-section" id="section-unnamed" style="animation-delay:0.1s">
@@ -1016,31 +770,6 @@ body {
 <div id="section-indicator"></div>
 
 <script>
-// ============================================
-// COVER
-// ============================================
-document.getElementById('enter-cover').addEventListener('click', () => {
-  const cover = document.getElementById('cover');
-  cover.classList.add('exit');
-  setTimeout(() => cover.style.display = 'none', 900);
-});
-
-// Cover cells also clickable
-document.querySelectorAll('.cover-cell[data-section]').forEach(cell => {
-  cell.style.cursor = 'pointer';
-  cell.addEventListener('click', () => {
-    const target = cell.dataset.section;
-    document.getElementById('enter-cover').click();
-    setTimeout(() => {
-      const sectionMap = {
-        unnamed: 'unnamed', accounting: 'accounting',
-        missing: 'missing', veil: 'veil', chance: 'chance'
-      };
-      if (sectionMap[target]) jumpToSection(sectionMap[target]);
-    }, 950);
-  });
-});
-
 // ============================================
 // INDEX NAVIGATION
 // ============================================

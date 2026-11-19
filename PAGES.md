@@ -9,7 +9,7 @@ Published: November 11, 2026. Stills added November 13, 2026.
 | Page | Address | What it is |
 |---|---|---|
 | Index | /mater-pages/ | Plain list so the root isn't blank. Framer becomes the real front door. |
-| We Are the Source | /letter.html | Open letter v2.6 |
+| We Are the Source | /letter.html | Open letter v3 (19 Nov 2026) |
 | The Scissors | /scissors.html | Figure 1: training data drawn vs. Source index, 2015–2025 |
 | How the Source index is built | /method.html | Method note: four proxies, values, caveats |
 | The Economic Torus | /model.html | The model (SpiralTorus_02): measured to 2025, two scenarios to 2044 |

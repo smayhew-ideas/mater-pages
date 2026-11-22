@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Human Substrate</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Michroma&family=Saira:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -330,32 +330,6 @@
   .fbtn.closed:hover { background: rgba(130,185,220,0.12); } .fbtn.open:hover { background: rgba(215,140,100,0.12); }
   @media (max-width: 900px) { #hint { display: none; } #fork { left: 50%; top: 70px; width: 92vw; } }
 
-  /* Bottom bar, stronger (22 Nov) */
-  #controls { gap: 12px; align-items: center; }
-  .btn {
-    font-size: 11px !important; font-weight: 500; letter-spacing: 3.5px !important;
-    padding: 11px 18px !important;
-    color: rgba(225,215,190,0.95) !important;
-    border: 1px solid rgba(210,190,140,0.55) !important;
-    background: rgba(12,12,10,0.6) !important;
-  }
-  .btn:hover { border-color: rgba(230,205,140,0.9) !important; color: rgba(245,232,200,1) !important; }
-  #bp { min-width: 104px; color: rgba(20,18,12,0.95) !important; background: rgba(225,200,135,0.92) !important; border-color: rgba(225,200,135,1) !important; }
-  #bp:hover { background: rgba(240,215,150,1) !important; }
-  #bo { margin-left: 10px; border-color: rgba(130,185,220,0.8) !important; color: rgba(160,205,238,1) !important; }
-  #bo.open { border-color: rgba(215,140,100,0.85) !important; color: rgba(238,160,120,1) !important; }
-  #hint { font-size: 12px; letter-spacing: 0.3px; color: rgba(200,192,170,0.85); }
-  #timeline { gap: 14px; }
-  #tl-left, #tl-right { font-size: 11px !important; letter-spacing: 2px !important; color: rgba(215,205,180,0.85) !important; }
-  #tl-split { font-size: 9px !important; letter-spacing: 2.5px !important; color: rgba(205,195,170,0.8) !important; top: -18px !important; }
-  #tl-split::after { top: 14px !important; height: 11px !important; background: rgba(225,200,135,0.8) !important; }
-  #timeline-slider { height: 3px !important; width: 340px; }
-  #timeline-slider::-webkit-slider-thumb { width: 16px !important; height: 16px !important; background: rgba(235,212,150,1) !important; }
-  #timeline-slider::-moz-range-thumb { width: 16px; height: 16px; border: 0; border-radius: 50%; background: rgba(235,212,150,1); }
-  #still-btn { font-size: 10px !important; letter-spacing: 3px !important; padding: 9px 14px !important; color: rgba(220,210,185,0.9) !important; border-color: rgba(210,190,140,0.5) !important; }
-  /* The indicator repeated the year label and the placard's road line, and collided with the card on smaller screens */
-  #dividend-indicator { display: none !important; }
-
   /* Timeline track: solid where it is the record, dashed where it is drawn */
   #tl-track { position: relative; display: flex; align-items: center; }
   #timeline-slider {
@@ -382,6 +356,62 @@
     #tl-label { display: none; }
     #year { left: auto; right: 48px; transform: none; bottom: 72px; text-align: right; }
   }
+
+  /* Design pass, 22 Nov evening: square type, quieter chrome, a little Gibson */
+  :root { --fd: 'Michroma', 'Eurostile', 'Square 721 Extended', sans-serif; --fb: 'Saira', 'Eurostile', sans-serif; }
+  html, body { font-family: var(--fb) !important; }
+  a.mark-top, .rams-title, .lg-title, .fork-k, .rams-now, #year, .btn, #still-btn, .fbtn, #tl-split, #tl-left, #tl-right, .mark-sub {
+    font-family: var(--fd) !important; font-weight: 400 !important;
+  }
+  a.mark-top { font-size: 12px !important; letter-spacing: 7px !important; color: rgba(232,222,196,0.9) !important; }
+  .mark-sub { font-size: 7.5px !important; letter-spacing: 2.5px !important; text-transform: uppercase; color: rgba(185,178,158,0.6) !important; margin-top: 6px; }
+  .mark-sub i { font-style: normal; color: rgba(215,205,180,0.75); }
+  .rams-title { font-size: 8.5px !important; letter-spacing: 4px !important; color: rgba(215,195,140,0.75) !important; }
+  .rams-lead { font-family: var(--fb); font-size: 17px; font-weight: 300; color: rgba(230,222,200,0.88); }
+  .rams-more { font-size: 11.5px; color: rgba(190,182,162,0.72); transition: max-height 2.6s ease, opacity 2.6s ease, margin 2.6s ease; }
+  .rams-now { font-size: 7.5px; letter-spacing: 3px; }
+  .rams-legend { font-size: 10.5px; color: rgba(190,182,162,0.7); }
+
+  #controls { gap: 10px; align-items: center; }
+  .btn {
+    font-size: 8.5px !important; letter-spacing: 3px !important;
+    padding: 9px 14px !important;
+    color: rgba(218,208,184,0.85) !important;
+    border: 1px solid rgba(215,205,180,0.28) !important;
+    background: none !important;
+  }
+  .btn:hover { border-color: rgba(230,220,195,0.6) !important; color: rgba(240,232,210,1) !important; }
+  #bp { min-width: 92px; }
+  #bo { margin-left: 8px; border-color: rgba(130,185,220,0.45) !important; color: rgba(160,200,232,0.9) !important; }
+  #bo.open { border-color: rgba(215,140,100,0.5) !important; color: rgba(232,158,120,0.9) !important; }
+  #hint { font-size: 11px; letter-spacing: 0.4px; color: rgba(185,178,158,0.6); margin-left: 12px; }
+  #timeline { gap: 12px; }
+  #tl-left, #tl-right { font-size: 8.5px !important; letter-spacing: 2px !important; color: rgba(205,195,170,0.65) !important; }
+  #tl-split { font-size: 6.5px !important; letter-spacing: 2.5px !important; color: rgba(195,185,160,0.6) !important; top: -16px !important; }
+  #tl-split::after { top: 12px !important; height: 10px !important; background: rgba(215,195,140,0.6) !important; }
+  #timeline-slider { height: 2px !important; width: 320px; }
+  #timeline-slider::-webkit-slider-thumb { width: 12px !important; height: 12px !important; background: rgba(232,222,196,0.95) !important; }
+  #timeline-slider::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: rgba(232,222,196,0.95); }
+  #still-btn { font-size: 7.5px !important; letter-spacing: 2.5px !important; padding: 8px 12px !important; color: rgba(205,195,170,0.7) !important; border: 1px solid rgba(215,205,180,0.22) !important; background: none !important; }
+  #year { font-size: 10px !important; letter-spacing: 5px !important; color: rgba(215,195,140,0.7) !important; }
+  #dividend-indicator { display: none !important; }
+
+  /* Fork: frosted, not black */
+  #fork {
+    background: rgba(232,228,218,0.07) !important;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border: 1px solid rgba(240,234,218,0.14) !important;
+    transition: opacity 2s ease !important;
+  }
+  .fork-k { font-size: 8px !important; letter-spacing: 4px !important; }
+  .fork-h { font-family: var(--fb); font-size: 19px !important; color: rgba(236,228,206,0.92) !important; }
+  .fork-note { font-size: 11.5px !important; color: rgba(195,187,166,0.75) !important; }
+  .fbtn { font-size: 8.5px !important; letter-spacing: 2.5px !important; background: none !important; }
+  .fbtn small { font-family: var(--fb); font-size: 10.5px; letter-spacing: 0.3px; }
+
+  /* Source Index panel in the same voice */
+  .lg-title { font-size: 8px !important; letter-spacing: 4px !important; }
+  .lg-note { font-family: var(--fb); }
 </style>
 </head>
 <body>
@@ -403,7 +433,7 @@
   <div class="rams-legend">
     <div><span class="sw" style="background:rgb(225,175,70)"></span>Drawn from the source</div>
     <div><span class="sw" style="background:rgb(110,155,195)"></span>Returned to it</div>
-    <div><span class="sw band"></span>The Source</div>
+    <div><span class="sw band"></span><span id="lg-band">The Source</span></div>
   </div>
 </div>
 
@@ -616,7 +646,7 @@ const Ledger = (() => {
     svg.appendChild(n);
     return n;
   };
-  const FONT = 'Inter, sans-serif';
+  const FONT = "Saira, 'Eurostile', sans-serif";
 
   // Zone backdrop: the drawn years get a faint hatch so they never read as data
   const defs = el('defs', {});
@@ -929,9 +959,16 @@ const ANN_OPEN = [
 //  While a card is on screen the clock slows so every card holds for READ_S
 //  seconds at Normal; between cards the torus travels quickly.
 // ═══════════════════════════════════════════════════════════════
+const FD = "Michroma, 'Eurostile', 'Square 721 Extended', sans-serif";   // display: square, wide
+const FB = "Saira, 'Eurostile', sans-serif";                               // body: square, light
 const READ_S = 11, TRAVEL = 0.05, PACE_FADE = 0.012;   // one speed: brisk, pause to read
+const CARD_FADE_T = 1.0;   // seconds; cards ease in and out over about 3 s
 function paceRate(p) {
   const list = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
+  for (const a of list) {
+    const inside = p >= a.p && p <= a.p + a.window;
+    if (!inside && (a._a || 0) > 0.04) return 0;   // let the last card finish fading before moving on
+  }
   for (const a of list) {
     if (p >= a.p - PACE_FADE && p < a.p + a.window) return (a.window + PACE_FADE) / READ_S;
   }
@@ -1086,8 +1123,11 @@ function draw(ts) {
   ramsEl.classList.toggle('compact', progress > 0.13);
   {
     const now = progress <= 1.0 ? 'The record · measured'
-      : (loopMode === 'closed' ? 'If we choose · drawn, not measured' : 'If we do nothing · drawn, not measured');
+      : (loopMode === 'closed' ? 'If we choose · drawn' : 'If we do nothing · drawn');
     if (ramsNow.textContent !== now) ramsNow.textContent = now;
+    const bandTxt = (progress > 1.0 && loopMode === 'closed') ? 'Mater: the Source, named' : 'The Source';
+    const lgBand = document.getElementById('lg-band');
+    if (lgBand.textContent !== bandTxt) lgBand.textContent = bandTxt;
     ramsNow.classList.toggle('closed', progress > 1.0 && loopMode === 'closed');
     ramsNow.classList.toggle('open', progress > 1.0 && loopMode === 'open');
   }
@@ -1118,7 +1158,7 @@ function draw(ts) {
   const scale = Math.min(W, H) * (narrow0 ? 0.30 : 0.27);
   const narrow = W < 900;
   const cx = narrow ? W * 0.50 : W * 0.42;
-  const SIDE = narrow ? 1.08 : 1.22;   // cards sit on translucent panels, so they may overlap the torus edge
+  const SIDE = narrow ? 1.08 : 1.46;   // side cards clear the torus (~1.36 × scale) so the spiral stays whole
   const cy = narrow ? Math.min(H * 0.42, 260) : H * 0.50;
 
   // ── Particle motion ──
@@ -1352,19 +1392,26 @@ function draw(ts) {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       const ls = Math.max(7, Math.floor(scale * 0.032));
-      ctx.font = `500 ${ls}px Inter, sans-serif`;
+      ctx.font = `400 ${ls}px ${FD}`;
       if ('letterSpacing' in ctx) ctx.letterSpacing = Math.round(ls * 0.5) + 'px';
       ctx.fillStyle = `rgba(242,226,198,${0.45 + 0.3 * Math.min(1, healthShown)})`;
-      ctx.fillText('THE SOURCE', labelPt[0], labelPt[1] + 12);
+      // Naming: on the closed road the source gets its name, first in brackets, then as a proper name.
+      // Unnamed on the record and on the "do nothing" road.
+      const named = progress > 1.0 && loopMode === 'closed';
+      const bandName = !named ? 'THE SOURCE' : (progress < 1.12 ? '[MATER]' : 'MATER');
+      if (named) ctx.fillStyle = `rgba(214,228,246,${0.62 + 0.3 * Math.min(1, healthShown)})`;
+      ctx.fillText(bandName, labelPt[0], labelPt[1] + 12);
       {
         const ss = Math.max(6, Math.floor(ls * 0.8));
-        ctx.font = `300 ${ss}px Inter, sans-serif`;
+        ctx.font = `400 ${ss}px ${FB}`;
         if ('letterSpacing' in ctx) ctx.letterSpacing = Math.round(ss * 0.3) + 'px';
         ctx.fillStyle = 'rgba(210,200,178,0.55)';
         const sub = SOURCE_IS_ILLUSTRATIVE ? 'ILLUSTRATIVE INDEX'
           : progress <= 1.0
             ? 'INDEX ' + healthShown.toFixed(2) + ' · 4 MEASURED PROXIES'
-            : 'INDEX ' + healthShown.toFixed(2) + ' · SCENARIO';
+            : (progress > 1.0 && loopMode === 'closed'
+                ? 'THE SOURCE, NAMED · COMMONS INDEX ' + healthShown.toFixed(2) + ' · SCENARIO'
+                : 'INDEX ' + healthShown.toFixed(2) + ' · SCENARIO');
         ctx.fillText(sub, labelPt[0], labelPt[1] + 12 + ls * 1.6);
       }
       ctx.restore();
@@ -1454,71 +1501,84 @@ function draw(ts) {
     }
   });
 
-  // ── Annotations — three cards on translucent panels ──
-  const ANN_FADE = 0.012;
+  // ── Annotations — three cards on soft frosted panels; time-based fades ──
   const active = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
-  const warm = (a) => `rgba(222,212,188,${a})`;
-  const cool = (a) => `rgba(185,196,212,${a})`;
-  const mid  = (a) => `rgba(200,192,172,${a})`;
-  const yearSize  = Math.max(11, Math.floor(scale * 0.050));
-  const titleSize = Math.max(17, Math.floor(scale * 0.090));
-  const headSize  = Math.max(11, Math.floor(scale * 0.054));
-  const bodySize  = Math.max(13, Math.floor(scale * 0.062));
-  const lineH     = bodySize * 1.5;
-  const PAD       = Math.round(bodySize * 1.05);
+  const allAnn = ANN_COMMON.concat(ANN_CLOSED, ANN_OPEN);
+  const kFade = 1 - Math.exp(-raw / CARD_FADE_T);
+  allAnn.forEach(a => {
+    const on = active.includes(a) && progress >= a.p && progress <= a.p + (a.window || 0.10);
+    a._a = (a._a || 0) + ((on ? 1 : 0) - (a._a || 0)) * kFade;
+  });
+  const warm = (a) => `rgba(228,220,200,${a})`;
+  const cool = (a) => `rgba(196,206,220,${a})`;
+  const mid  = (a) => `rgba(214,207,190,${a})`;
+  const yearSize  = Math.max(8,  Math.floor(scale * 0.036));
+  const titleSize = Math.max(13, Math.floor(scale * 0.062));
+  const headSize  = Math.max(8,  Math.floor(scale * 0.036));
+  const bodySize  = Math.max(12, Math.floor(scale * 0.054));
+  const lineH     = bodySize * 1.55;
+  const PAD       = Math.round(bodySize * 1.15);
   PANELS.length = 0;
   const widest = (lines) => lines.reduce((m, l) => Math.max(m, ctx.measureText(l).width), 0);
   function panel(x, y, w, h, a) {
     ctx.save();
+    ctx.fillStyle = `rgba(236,232,222,${0.11 * a})`;
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = `rgba(235,230,215,${0.07 * a})`;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    // registration corners
+    const k = 9;
+    ctx.strokeStyle = `rgba(240,234,218,${0.42 * a})`;
     ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(x, y, w, h, 3); else ctx.rect(x, y, w, h);
-    ctx.fillStyle = `rgba(9,9,7,${0.68 * a})`;
-    ctx.fill();
-    ctx.strokeStyle = `rgba(195,175,115,${0.18 * a})`;
-    ctx.lineWidth = 1; ctx.stroke();
+    ctx.moveTo(x, y + k); ctx.lineTo(x, y); ctx.lineTo(x + k, y);
+    ctx.moveTo(x + w - k, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w, y + k);
+    ctx.moveTo(x + w, y + h - k); ctx.lineTo(x + w, y + h); ctx.lineTo(x + w - k, y + h);
+    ctx.moveTo(x + k, y + h); ctx.lineTo(x, y + h); ctx.lineTo(x, y + h - k);
+    ctx.stroke();
     ctx.restore();
     if (a > 0.5) PANELS.push([x, y, w, h]);
   }
+  const spaced = (px) => { if ('letterSpacing' in ctx) ctx.letterSpacing = px + 'px'; };
 
   active.forEach(ann => {
-    const w = ann.window || 0.10;
-    const dist = progress - ann.p;
-    if (dist < -ANN_FADE || dist > w + ANN_FADE) return;
-    let alpha;
-    if (dist < 0) alpha = (dist + ANN_FADE) / ANN_FADE;
-    else if (dist > w) alpha = 1 - (dist - w) / ANN_FADE;
-    else alpha = 1;
-    alpha = clamp(alpha, 0, 1);
+    const alpha = clamp(ann._a || 0, 0, 1);
+    if (alpha < 0.01) return;
 
     if (ann.center) {
       const c2 = ann.center;
       const lines = c2.fact.split('\n');
       const factY = cy + scale * 0.66;
-      const yearTxt = ann.p >= 1.0 ? c2.year + ' · Scenario' : c2.year;
+      const code = ann.p >= 1.0
+        ? `${c2.year}  /  SRC ${healthShown.toFixed(2)}  /  DRAWN`
+        : `${c2.year}  /  SRC ${healthShown.toFixed(2)}  /  MEASURED`;
       ctx.save();
-      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
+      ctx.font = `300 ${bodySize}px ${FB}`;
       let bw = widest(lines);
-      ctx.font = `400 ${titleSize}px Inter, sans-serif`;
-      bw = Math.max(bw, ctx.measureText(c2.title).width);
-      const titleY2 = factY + yearSize * 1.4;
-      const ruleY = titleY2 + titleSize * 1.3;
-      const bodyY = ruleY + bodySize * 0.8;
-      const h = (bodyY + lines.length * lineH) - factY + PAD * 1.6;
+      ctx.font = `400 ${titleSize}px ${FD}`; spaced(1);
+      bw = Math.max(bw, ctx.measureText(c2.title.toUpperCase()).width);
+      ctx.font = `400 ${yearSize}px ${FD}`; spaced(2);
+      bw = Math.max(bw, ctx.measureText(code).width);
+      const titleY2 = factY + yearSize * 1.9;
+      const ruleY = titleY2 + titleSize * 1.55;
+      const bodyY = ruleY + bodySize * 0.9;
+      const h = (bodyY + lines.length * lineH) - factY + PAD * 1.5;
       panel(cx - bw / 2 - PAD * 1.4, factY - PAD, bw + PAD * 2.8, h, alpha);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.font = `400 ${yearSize}px Inter, sans-serif`;
-      ctx.fillStyle = warm(alpha * 0.62);
-      ctx.fillText(yearTxt, cx, factY);
-      ctx.font = `400 ${titleSize}px Inter, sans-serif`;
-      ctx.fillStyle = warm(alpha * 0.97);
-      ctx.fillText(c2.title, cx, titleY2);
-      const rw = scale * 0.12;
-      ctx.strokeStyle = warm(alpha * 0.25);
+      ctx.font = `400 ${yearSize}px ${FD}`; spaced(2);
+      ctx.fillStyle = warm(alpha * 0.55);
+      ctx.fillText(code, cx, factY);
+      ctx.font = `400 ${titleSize}px ${FD}`; spaced(1);
+      ctx.fillStyle = warm(alpha * 0.9);
+      ctx.fillText(c2.title.toUpperCase(), cx, titleY2);
+      spaced(0);
+      const rw = scale * 0.06;
+      ctx.strokeStyle = warm(alpha * 0.3);
       ctx.lineWidth = 0.6;
       ctx.beginPath(); ctx.moveTo(cx - rw, ruleY); ctx.lineTo(cx + rw, ruleY); ctx.stroke();
-      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
-      ctx.fillStyle = mid(alpha * 0.92);
+      ctx.font = `300 ${bodySize}px ${FB}`;
+      ctx.fillStyle = mid(alpha * 0.82);
       lines.forEach((line, i) => ctx.fillText(line, cx, bodyY + i * lineH));
       ctx.restore();
     }
@@ -1527,28 +1587,27 @@ function draw(ts) {
       const y = cy - scale * 0.30;
       const lines = body.split('\n');
       ctx.save();
-      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
+      ctx.font = `300 ${bodySize}px ${FB}`;
       const bw = Math.max(widest(lines), scale * 0.5);
-      const h = headSize * 1.9 + lines.length * lineH + PAD * 1.6;
+      const h = headSize * 2.4 + lines.length * lineH + PAD * 1.5;
       const px = align === 'right' ? x - bw - PAD : x - PAD;
       panel(px, y - PAD, bw + PAD * 2, h, alpha);
       ctx.textAlign = align;
       ctx.textBaseline = 'top';
-      ctx.font = `500 ${headSize}px Inter, sans-serif`;
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
-      ctx.fillStyle = color(alpha * 0.85);
+      ctx.font = `400 ${headSize}px ${FD}`; spaced(3);
+      ctx.fillStyle = color(alpha * 0.75);
       ctx.fillText(head.toUpperCase(), x, y);
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-      const rw = scale * 0.12;
-      ctx.strokeStyle = color(alpha * 0.25);
+      spaced(0);
+      const rw = scale * 0.06;
+      ctx.strokeStyle = color(alpha * 0.3);
       ctx.lineWidth = 0.6;
-      const ry = y + headSize * 1.4;
+      const ry = y + headSize * 1.7;
       ctx.beginPath();
       if (align === 'right') { ctx.moveTo(x - rw, ry); ctx.lineTo(x, ry); } else { ctx.moveTo(x, ry); ctx.lineTo(x + rw, ry); }
       ctx.stroke();
-      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
-      ctx.fillStyle = color === cool ? cool(alpha * 0.9) : mid(alpha * 0.92);
-      lines.forEach((line, i) => ctx.fillText(line, x, y + headSize * 1.9 + i * lineH));
+      ctx.font = `300 ${bodySize}px ${FB}`;
+      ctx.fillStyle = color === cool ? cool(alpha * 0.8) : mid(alpha * 0.82);
+      lines.forEach((line, i) => ctx.fillText(line, x, y + headSize * 2.4 + i * lineH));
       ctx.restore();
     };
     if (ann.left)  side(ann.left.body,  'Geometry',  cx - scale * SIDE, 'right', cool);
@@ -1562,11 +1621,11 @@ function draw(ts) {
     ctx.save();
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
-    const ts2 = Math.max(11, Math.floor(scale * 0.088));
-    ctx.font = `300 ${ts2}px Inter, sans-serif`;
+    const ts2 = Math.max(11, Math.floor(scale * 0.070));
+    ctx.font = `400 ${ts2}px ${FD}`;
     ctx.fillStyle = `rgba(210,220,240,${titleAlpha})`;
     const title = 'THE ECONOMIC TORUS';
-    const letterSpacing = ts2 * 0.28;
+    const letterSpacing = ts2 * 0.32;
     let totalW = 0;
     for (const ch of title) totalW += ctx.measureText(ch).width + (ch === ' ' ? letterSpacing * 0.5 : letterSpacing);
     let tx = cx - totalW / 2;
@@ -1577,15 +1636,15 @@ function draw(ts) {
     if (dp > 0.08) {
       const heroAlpha = Math.min(Math.pow((dp - 0.08) / 0.3, 1.4) * 0.52, 0.52);
       const heroSize = Math.max(6, Math.floor(scale * 0.040));
-      ctx.font = `300 ${heroSize}px Inter, sans-serif`;
+      ctx.font = `300 ${heroSize}px ${FB}`;
       ctx.fillStyle = `rgba(175,185,205,${heroAlpha})`;
       ctx.textAlign = 'center';
       ctx.fillText('Toroidal geometry applied to the flow of an extractive economy, over time.', cx, titleY + ts2 * 1.55);
     }
     if (dp > 0.35) {
       const subAlpha = Math.pow((dp - 0.35) / 0.65, 2.0) * 0.78;
-      const subSize = Math.max(11, Math.floor(scale * 0.052));
-      ctx.font = `300 ${subSize}px Inter, sans-serif`;
+      const subSize = Math.max(11, Math.floor(scale * 0.050));
+      ctx.font = `300 ${subSize}px ${FB}`;
       ctx.fillStyle = `rgba(185,205,235,${subAlpha})`;
       ctx.textAlign = 'center';
       ctx.fillText('Current is the currency.', cx, titleY + ts2 * 1.55 + Math.max(6, Math.floor(scale * 0.040)) * 2.4);

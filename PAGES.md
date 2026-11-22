@@ -24,6 +24,8 @@ All under https://smayhew-ideas.github.io/mater-pages/stills/
 - scissors.png, carriers.png, index.png
 - letter-point01-2026-11-18.png (cover removed), letter-v3-2026-11-19.png, letter-v3.1-2026-11-19.png, letter-v3.2-06-2026-11-22.png
 - torus-open-fracture-2026-11-22.png, torus-2044-closed-currency-2026-11-22.png (Model wording: "closed" = return path only; "Current is the currency.")
+- torus-ledger-2024-measured-2026-11-22.png, torus-ledger-2044-closed-2026-11-22.png, torus-ledger-2044-open-2026-11-22.png (Model: Source Index panel, measured vs. drawn; bottom bar re-laid out)
+- scissors-2026-11-22.png, method-values-2026-11-22.png (Stack Overflow re-pulled from the Stack Exchange API: 2024 index 0.63, 2022 0.97)
 
 Add new dated stills as the work changes. Don't overwrite old ones.
 

@@ -76,7 +76,7 @@
       <table>
         <thead><tr><th>Code</th><th>What it measures</th><th>What it tracks</th><th>Source</th></tr></thead>
         <tbody>
-          <tr><td class="code">Q</td><td>Stack Overflow new questions per year, as a share of its own 2015–19 trend</td><td>Withdrawal</td><td>Stack Exchange Data Explorer (monthly counts, compiled in gist hopeseekr/f522e380…)</td></tr>
+          <tr><td class="code">Q</td><td>Stack Overflow new questions per year, as a share of its own 2015–19 trend</td><td>Withdrawal</td><td>Stack Exchange API (monthly question counts, current non-deleted questions, 2015–Oct 2026; pulled 22 Nov 2026)</td></tr>
           <tr><td class="code">C</td><td>Open access: 1 minus the share of C4's critical sources fully blocking AI training</td><td>Withdrawal behind walls</td><td><em>Consent in Crisis</em>, MIT Data Provenance Initiative, NeurIPS 2024</td></tr>
           <tr><td class="code">H</td><td>Human share of new web articles</td><td>Dilution</td><td>Graphite study of 55,400 Common Crawl pages, three AI detectors (reported by Axios, May 2026)</td></tr>
           <tr><td class="code">W</td><td>Wikipedia human pageviews, year over year</td><td>Drain on the source</td><td>Wikimedia Foundation, October 2025</td></tr>
@@ -93,10 +93,10 @@
         <tbody>
           <tr><td>2015</td><td>0.96</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.99</td></tr>
           <tr><td>2016–2020</td><td>~1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
-          <tr><td>2021</td><td>0.97</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.99</td></tr>
-          <tr><td>2022</td><td>0.90</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.98</td></tr>
-          <tr><td>2023</td><td>0.57</td><td>0.95</td><td>0.64</td><td>1.00</td><td>0.79</td></tr>
-          <tr><td>2024</td><td>0.40</td><td>0.72</td><td>0.52</td><td>1.00</td><td>0.66</td></tr>
+          <tr><td>2021</td><td>0.96</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.99</td></tr>
+          <tr><td>2022</td><td>0.89</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.97</td></tr>
+          <tr><td>2023</td><td>0.56</td><td>0.95</td><td>0.64</td><td>1.00</td><td>0.79</td></tr>
+          <tr><td>2024</td><td>0.30</td><td>0.72</td><td>0.52</td><td>1.00</td><td>0.63</td></tr>
           <tr><td>2025</td><td>0.09</td><td>0.72</td><td>0.50</td><td>0.92</td><td>0.56</td></tr>
         </tbody>
       </table>
@@ -106,8 +106,8 @@
   <section>
     <h2>Decisions and caveats</h2>
     <ul>
-      <li><strong>Q is trend-adjusted.</strong> Stack Overflow was already declining about 5.8% a year (2015–19, log-linear fit, 2020 lockdown spike excluded) before LLMs. Only the shortfall beyond that trend counts. Raw, it would show a 95% collapse and overstate the AI effect.</li>
-      <li><strong>Q's 2025 figures</strong> come from a later update to the same compilation. Other published counts for late 2024 differ (one implies about 17,500 for December 2024 against 25,566 here), likely because of different query definitions. They should be pulled directly from the Data Explorer before publication.</li>
+      <li><strong>Q is trend-adjusted.</strong> Stack Overflow was already declining about 5.6% a year (2015–19, log-linear fit, 2020 lockdown spike excluded) before LLMs. Only the shortfall beyond that trend counts. Raw, it would show a 95% collapse and overstate the AI effect.</li>
+      <li><strong>Q was re-pulled on 22 November 2026</strong> directly from the public Stack Exchange API (monthly counts of current, non-deleted questions), replacing an earlier third-party compilation. The re-pull confirmed 2015, 2021, 2023 and 2025, and corrected 2024: December 2024 had 17,913 questions, not the 25,566 in the compilation, so Q for 2024 is 0.30, not 0.40, and the 2024 index 0.63, not 0.66. 2022 moved from 0.90 to 0.89. The 2025 index is unchanged at 0.56. Deleted questions are not counted.</li>
       <li><strong>C</strong> was measured to spring 2024. The 2023 value (0.95) is interpolated, and 2025 is carried forward. A separate 2025 study (Bouchaud and Ramaciotti, CNRS / Sciences Po) found about a quarter of the top 1,000 sites restricting AI crawlers, which is consistent with the carried-forward value.</li>
       <li><strong>H</strong> relies on AI detectors, which are imperfect, and counts AI-assisted writing as AI. It also plateaued at about 50% from 2025. That number doesn't flatter the thesis and is included deliberately.</li>
       <li><strong>W</strong> has a single reported year-over-year figure (2025). Earlier years are held at baseline, with no claim of decline.</li>

@@ -98,42 +98,7 @@
   }
 
   /* ── Responsive — iPad and mobile ── */
-  @media (max-width: 900px) {
-    body { overflow-y: auto; }
-
-    #mark {
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    #year {
-      top: auto;
-      bottom: auto;
-    }
-
-    #controls {
-      position: relative;
-      margin: 0 auto 24px auto;
-      text-align: center;
-    }
-
-    #app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    canvas#c {
-      width: 100vw !important;
-      height: 100vw !important;
-      max-height: 520px;
-      display: block;
-      flex-shrink: 0;
-    }
-  }
+  /* (old phone rules removed 22 Nov: they forced the canvas square and squashed the drawing) */
 
   /* ── TIMELINE SCRUBBER ── */
   #timeline {
@@ -254,9 +219,7 @@
     color: rgba(180,172,152,0.68);
     text-transform: uppercase;
   }
-  @media (max-width: 900px) {
-    #rams { display: none; }
-  }
+
 
   /* ── LEDGER — the Source index, measured vs. drawn ── */
   #ledger {
@@ -412,6 +375,38 @@
   /* Source Index panel in the same voice */
   .lg-title { font-size: 8px !important; letter-spacing: 4px !important; }
   .lg-note { font-family: var(--fb); }
+
+  /* Cyan accent (Gibson): chrome only; gold stays the colour of what is drawn, blue of what returns */
+  .rams-title, .lg-title, .fork-k, #year { color: rgba(104,212,224,0.78) !important; }
+  #tl-split::after { background: rgba(104,212,224,0.7) !important; }
+  a.mark-top:hover { color: rgba(140,228,236,1) !important; }
+  #timeline-slider::-webkit-slider-thumb { background: rgba(150,226,234,0.95) !important; }
+  #timeline-slider::-moz-range-thumb { background: rgba(150,226,234,0.95); }
+  #fork { border-color: rgba(104,212,224,0.28) !important; }
+
+  /* Phone and small tablet */
+  @media (max-width: 900px) {
+    html, body { overflow: hidden; }
+    canvas#c { width: 100vw !important; height: 100vh !important; height: 100dvh !important; }
+    #mark { top: 16px; left: 0; right: 0; text-align: center; }
+    .mark-sub { display: none; }
+    #rams { display: block !important; top: 44px; left: 4vw; width: 92vw; text-align: center; }
+    #rams .rams-title, #rams .rams-more, #rams .rams-legend { display: none; }
+    .rams-lead { font-size: 15px !important; }
+    .rams-lead br { display: none; }
+    .rams-now { margin-top: 6px; }
+    #year, #tl-label, #still-btn, #hint, #tl-split { display: none !important; }
+    #timeline { left: 16px !important; right: 16px !important; transform: none !important; bottom: 70px !important; gap: 10px !important; }
+    #tl-track { flex: 1; }
+    #timeline-slider { width: 100% !important; }
+    #controls { left: 0 !important; right: 0 !important; bottom: 14px !important; justify-content: center; }
+    #controls { gap: 8px !important; }
+    .btn { padding: 14px 12px !important; letter-spacing: 2px !important; }
+    #bo { margin-left: 0 !important; }
+    #fork { top: 64px !important; left: 4vw !important; width: 92vw; transform: none !important; padding: 18px 16px 16px !important; }
+    .fork-h { font-size: 17px !important; }
+    .fork-b { flex-wrap: wrap; }
+  }
 </style>
 </head>
 <body>
@@ -427,7 +422,7 @@
 
 <div id="rams">
   <div class="rams-title">The Economic Torus</div>
-  <div class="rams-lead">What AI draws from people,<br>and what comes back.</div>
+  <div class="rams-lead">What AI draws from people, <br>and what comes back.</div>
   <div class="rams-more">2015 to 2025 is the record, measured. After 2025 nothing is measured: two roads, drawn by hand. The loop closes by design, or the source fractures.</div>
   <div class="rams-now" id="rams-now">The record · measured</div>
   <div class="rams-legend">
@@ -961,8 +956,9 @@ const ANN_OPEN = [
 // ═══════════════════════════════════════════════════════════════
 const FD = "Michroma, 'Eurostile', 'Square 721 Extended', sans-serif";   // display: square, wide
 const FB = "Saira, 'Eurostile', sans-serif";                               // body: square, light
-const READ_S = 11, TRAVEL = 0.05, PACE_FADE = 0.012;   // one speed: brisk, pause to read
-const CARD_FADE_T = 1.0;   // seconds; cards ease in and out over about 3 s
+const CYAN = (a) => `rgba(104,212,224,${a})`;                               // accent: chrome, codes, marks
+const READ_S = 8, TRAVEL = 0.06, PACE_FADE = 0.012;    // one speed: brisk, pause to read
+const CARD_FADE_T = 0.7;   // seconds; cards ease in and out over about 2 s
 function paceRate(p) {
   const list = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
   for (const a of list) {
@@ -1155,11 +1151,11 @@ function draw(ts) {
 
   const W = window.innerWidth, H = window.innerHeight;
   const narrow0 = W < 900;
-  const scale = Math.min(W, H) * (narrow0 ? 0.30 : 0.27);
+  const scale = narrow0 ? Math.min(W * 0.30, H * 0.22) : Math.min(W, H) * 0.27;
   const narrow = W < 900;
   const cx = narrow ? W * 0.50 : W * 0.42;
   const SIDE = narrow ? 1.08 : 1.46;   // side cards clear the torus (~1.36 × scale) so the spiral stays whole
-  const cy = narrow ? Math.min(H * 0.42, 260) : H * 0.50;
+  const cy = narrow ? Math.max(H * 0.30, 210) : H * 0.50;
 
   // ── Particle motion ──
   if (!paused) {
@@ -1529,7 +1525,7 @@ function draw(ts) {
     ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
     // registration corners
     const k = 9;
-    ctx.strokeStyle = `rgba(240,234,218,${0.42 * a})`;
+    ctx.strokeStyle = CYAN(0.55 * a);
     ctx.beginPath();
     ctx.moveTo(x, y + k); ctx.lineTo(x, y); ctx.lineTo(x + k, y);
     ctx.moveTo(x + w - k, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w, y + k);
@@ -1541,6 +1537,7 @@ function draw(ts) {
   }
   const spaced = (px) => { if ('letterSpacing' in ctx) ctx.letterSpacing = px + 'px'; };
 
+  let centerBottom = cy + scale;
   active.forEach(ann => {
     const alpha = clamp(ann._a || 0, 0, 1);
     if (alpha < 0.01) return;
@@ -1548,7 +1545,7 @@ function draw(ts) {
     if (ann.center) {
       const c2 = ann.center;
       const lines = c2.fact.split('\n');
-      const factY = cy + scale * 0.66;
+      const factY = cy + scale * (narrow ? 0.98 : 0.66);
       const code = ann.p >= 1.0
         ? `${c2.year}  /  SRC ${healthShown.toFixed(2)}  /  DRAWN`
         : `${c2.year}  /  SRC ${healthShown.toFixed(2)}  /  MEASURED`;
@@ -1564,10 +1561,11 @@ function draw(ts) {
       const bodyY = ruleY + bodySize * 0.9;
       const h = (bodyY + lines.length * lineH) - factY + PAD * 1.5;
       panel(cx - bw / 2 - PAD * 1.4, factY - PAD, bw + PAD * 2.8, h, alpha);
+      centerBottom = factY - PAD + h;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.font = `400 ${yearSize}px ${FD}`; spaced(2);
-      ctx.fillStyle = warm(alpha * 0.55);
+      ctx.fillStyle = CYAN(alpha * 0.75);
       ctx.fillText(code, cx, factY);
       ctx.font = `400 ${titleSize}px ${FD}`; spaced(1);
       ctx.fillStyle = warm(alpha * 0.9);
@@ -1583,13 +1581,17 @@ function draw(ts) {
       ctx.restore();
     }
 
-    const side = (body, head, x, align, color) => {
-      const y = cy - scale * 0.30;
+    const side = (body, head, x, align, color, yAt) => {
+      let y = yAt != null ? yAt : cy - scale * 0.30;
       const lines = body.split('\n');
       ctx.save();
       ctx.font = `300 ${bodySize}px ${FB}`;
       const bw = Math.max(widest(lines), scale * 0.5);
       const h = headSize * 2.4 + lines.length * lineH + PAD * 1.5;
+      if (align === 'center') {                      // phone: a left-set card, centred under the torus
+        if (y - PAD + h > H - 118) { ctx.restore(); return; }   // no room above the controls: skip
+        x = cx - bw / 2; align = 'left';
+      }
       const px = align === 'right' ? x - bw - PAD : x - PAD;
       panel(px, y - PAD, bw + PAD * 2, h, alpha);
       ctx.textAlign = align;
@@ -1610,8 +1612,13 @@ function draw(ts) {
       lines.forEach((line, i) => ctx.fillText(line, x, y + headSize * 2.4 + i * lineH));
       ctx.restore();
     };
-    if (ann.left)  side(ann.left.body,  'Geometry',  cx - scale * SIDE, 'right', cool);
-    if (ann.right) side(ann.right.body, 'Substrate', cx + scale * SIDE, 'left',  warm);
+    if (narrow) {
+      // Phone: the Substrate card (the human story) stacks under the centre card; Geometry is left out
+      if (ann.right) side(ann.right.body, 'Substrate', cx, 'center', warm, centerBottom + 10 + PAD);
+    } else {
+      if (ann.left)  side(ann.left.body,  'Geometry',  cx - scale * SIDE, 'right', cool);
+      if (ann.right) side(ann.right.body, 'Substrate', cx + scale * SIDE, 'left',  warm);
+    }
   });
 
   // ── Title — closed loop only, fades in with the Dividend ──
@@ -1623,7 +1630,7 @@ function draw(ts) {
     ctx.textAlign = 'left';
     const ts2 = Math.max(11, Math.floor(scale * 0.070));
     ctx.font = `400 ${ts2}px ${FD}`;
-    ctx.fillStyle = `rgba(210,220,240,${titleAlpha})`;
+    ctx.fillStyle = CYAN(titleAlpha);
     const title = 'THE ECONOMIC TORUS';
     const letterSpacing = ts2 * 0.32;
     let totalW = 0;

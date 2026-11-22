@@ -29,6 +29,7 @@ All under https://smayhew-ideas.github.io/mater-pages/stills/
 - torus-ledger-note-plain-2026-11-22.png (plainer note on drawn scenarios)
 - torus-legible-2024/2044-closed/2044-open-2026-11-22.png (visibility pass)
 - torus-cards-start/2022-shrug/fork/2044-closed/2044-open/2030-open-1280-2026-11-22.png (one speed, paneled cards, Mater placard, fork at 2025, stronger bottom bar)
+- torus-fork-you-are-here-2026-11-22.png, torus-if-we-do-nothing-2030-2026-11-22.png (fork reworded: "If we do nothing, the loop stays open. Closing it has to be chosen.")
 
 Add new dated stills as the work changes. Don't overwrite old ones.
 

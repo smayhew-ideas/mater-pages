@@ -39,7 +39,7 @@
     font-size: 10px;
     font-weight: 300;
     letter-spacing: 2px;
-    color: rgba(100,95,85,0.4);
+    color: rgba(150,143,128,0.62);
     margin-top: 5px;
   }
 
@@ -70,9 +70,9 @@
   .btn {
     background: none;
     border: 1px solid rgba(55,52,44,0.6);
-    color: rgba(85,82,74,0.65);
+    color: rgba(150,144,130,0.85);
     font-family: 'Inter', sans-serif;
-    font-size: 8px; font-weight: 500;
+    font-size: 9px; font-weight: 500;
     letter-spacing: 3px; padding: 7px 12px;
     cursor: pointer; text-transform: uppercase;
     transition: all 0.2s;
@@ -181,7 +181,7 @@
   #tl-left, #tl-right {
     font-size: 8px;
     letter-spacing: 3px;
-    color: rgba(150,140,120,0.35);
+    color: rgba(175,165,140,0.6);
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -225,8 +225,8 @@
     transition: color 2s ease;
     white-space: nowrap;
   }
-  #dividend-indicator.active { color: rgba(130,185,220,0.55); }
-  #dividend-indicator.active.open { color: rgba(215,140,100,0.55); }
+  #dividend-indicator.active { color: rgba(130,185,220,0.78); }
+  #dividend-indicator.active.open { color: rgba(215,140,100,0.78); }
 
   /* ── RAMS PLACARD — moved to top-left so it no longer sits on the controls ── */
   #rams {
@@ -247,11 +247,11 @@
     margin-bottom: 10px;
   }
   .rams-line {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 300;
     letter-spacing: 1.5px;
     line-height: 2.0;
-    color: rgba(155,148,130,0.45);
+    color: rgba(180,172,152,0.68);
     text-transform: uppercase;
   }
   @media (max-width: 900px) {
@@ -295,6 +295,66 @@
     #ledger { display: none; }
   }
 
+  /* Mark, placard, fork prompt, hint */
+  a.mark-top { text-decoration: none; display: inline-block; font-size: 13px !important; letter-spacing: 7px !important; color: rgba(225,210,170,0.92) !important; }
+  a.mark-top:hover { color: rgba(240,225,185,1) !important; }
+  .mark-sub i { font-style: italic; }
+  #rams { width: 330px; }
+  .rams-title { font-size: 11px !important; color: rgba(215,190,125,0.85) !important; margin-bottom: 8px !important; }
+  .rams-lead { font-size: 19px; font-weight: 300; line-height: 1.35; color: rgba(235,225,200,0.95); letter-spacing: 0.2px; }
+  .rams-more { font-size: 12.5px; font-weight: 300; line-height: 1.6; color: rgba(195,187,166,0.82); margin-top: 10px; max-height: 120px; overflow: hidden; transition: max-height 1.2s ease, opacity 1.2s ease, margin 1.2s ease; }
+  #rams.compact .rams-more { max-height: 0; opacity: 0; margin-top: 0; }
+  .rams-now { margin-top: 12px; font-size: 9px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase; color: rgba(210,185,120,0.8); }
+  .rams-now.closed { color: rgba(130,185,220,0.9); } .rams-now.open { color: rgba(215,140,100,0.9); }
+  .rams-legend { margin-top: 10px; font-size: 11px; font-weight: 300; line-height: 1.9; color: rgba(190,182,162,0.8); }
+  .rams-legend .sw { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 9px; vertical-align: 1px; }
+  .rams-legend .sw.band { width: 16px; height: 3px; border-radius: 2px; background: rgb(242,226,198); vertical-align: 3px; margin-right: 0; margin-left: -4px; margin-right: 5px; }
+
+  #hint { margin-left: 16px; align-self: center; font-size: 10px; letter-spacing: 1px; color: rgba(165,157,138,0.7); white-space: nowrap; }
+
+  #fork {
+    position: fixed; top: 110px; left: 42%; transform: translateX(-50%);
+    background: rgba(10,10,8,0.82); border: 1px solid rgba(210,185,120,0.35);
+    padding: 22px 26px 20px; text-align: center; z-index: 200;
+    opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+  }
+  #fork.show { opacity: 1; pointer-events: all; }
+  .fork-k { font-size: 9px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: rgba(210,185,120,0.8); }
+  .fork-h { font-size: 20px; font-weight: 300; line-height: 1.35; color: rgba(240,230,205,0.96); margin: 10px 0 16px; }
+  .fork-b { display: flex; gap: 12px; justify-content: center; }
+  .fbtn { background: none; font-family: inherit; cursor: pointer; padding: 10px 16px; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; transition: background 0.2s; }
+  .fbtn small { display: block; margin-top: 4px; font-size: 10px; font-weight: 300; letter-spacing: 0.5px; text-transform: none; opacity: 0.8; }
+  .fbtn.closed { border: 1px solid rgba(130,185,220,0.6); color: rgba(150,200,235,0.95); }
+  .fbtn.open { border: 1px solid rgba(215,140,100,0.6); color: rgba(230,155,115,0.95); }
+  .fbtn.closed:hover { background: rgba(130,185,220,0.12); } .fbtn.open:hover { background: rgba(215,140,100,0.12); }
+  @media (max-width: 900px) { #hint { display: none; } #fork { left: 50%; top: 70px; width: 92vw; } }
+
+  /* Bottom bar, stronger (22 Nov) */
+  #controls { gap: 12px; align-items: center; }
+  .btn {
+    font-size: 11px !important; font-weight: 500; letter-spacing: 3.5px !important;
+    padding: 11px 18px !important;
+    color: rgba(225,215,190,0.95) !important;
+    border: 1px solid rgba(210,190,140,0.55) !important;
+    background: rgba(12,12,10,0.6) !important;
+  }
+  .btn:hover { border-color: rgba(230,205,140,0.9) !important; color: rgba(245,232,200,1) !important; }
+  #bp { min-width: 104px; color: rgba(20,18,12,0.95) !important; background: rgba(225,200,135,0.92) !important; border-color: rgba(225,200,135,1) !important; }
+  #bp:hover { background: rgba(240,215,150,1) !important; }
+  #bo { margin-left: 10px; border-color: rgba(130,185,220,0.8) !important; color: rgba(160,205,238,1) !important; }
+  #bo.open { border-color: rgba(215,140,100,0.85) !important; color: rgba(238,160,120,1) !important; }
+  #hint { font-size: 12px; letter-spacing: 0.3px; color: rgba(200,192,170,0.85); }
+  #timeline { gap: 14px; }
+  #tl-left, #tl-right { font-size: 11px !important; letter-spacing: 2px !important; color: rgba(215,205,180,0.85) !important; }
+  #tl-split { font-size: 9px !important; letter-spacing: 2.5px !important; color: rgba(205,195,170,0.8) !important; top: -18px !important; }
+  #tl-split::after { top: 14px !important; height: 11px !important; background: rgba(225,200,135,0.8) !important; }
+  #timeline-slider { height: 3px !important; width: 340px; }
+  #timeline-slider::-webkit-slider-thumb { width: 16px !important; height: 16px !important; background: rgba(235,212,150,1) !important; }
+  #timeline-slider::-moz-range-thumb { width: 16px; height: 16px; border: 0; border-radius: 50%; background: rgba(235,212,150,1); }
+  #still-btn { font-size: 10px !important; letter-spacing: 3px !important; padding: 9px 14px !important; color: rgba(220,210,185,0.9) !important; border-color: rgba(210,190,140,0.5) !important; }
+  /* The indicator repeated the year label and the placard's road line, and collided with the card on smaller screens */
+  #dividend-indicator { display: none !important; }
+
   /* Timeline track: solid where it is the record, dashed where it is drawn */
   #tl-track { position: relative; display: flex; align-items: center; }
   #timeline-slider {
@@ -328,17 +388,31 @@
 <div id="app"><canvas id="c"></canvas>
 
 <div id="mark">
-  <div class="mark-top">Human Substrate Project · THS</div>
-  <div class="mark-sub">An open letter · 2026</div>
+  <a class="mark-top" href="letter.html">Mater</a>
+  <div class="mark-sub">From the open letter <i>We Are the Source</i></div>
 </div>
 
 </div>
 
 <div id="rams">
   <div class="rams-title">The Economic Torus</div>
-  <div class="rams-line">A model of how an extractive AI economy<br>either closes its loop by design, or fractures.</div>
-  <div class="rams-line" style="margin-top:8px;opacity:0.6;">Toroidal geometry applied to the flow<br>of an extractive economy, over time.</div>
-  <div class="rams-line" style="margin-top:8px;opacity:0.5;">To 2025: the record. After 2025: two scenarios.</div>
+  <div class="rams-lead">What AI draws from people,<br>and what comes back.</div>
+  <div class="rams-more">2015 to 2025 is the record, measured. After 2025 nothing is measured: two roads, drawn by hand. The loop closes by design, or the source fractures.</div>
+  <div class="rams-now" id="rams-now">The record · measured</div>
+  <div class="rams-legend">
+    <div><span class="sw" style="background:rgb(225,175,70)"></span>Drawn from the source</div>
+    <div><span class="sw" style="background:rgb(110,155,195)"></span>Returned to it</div>
+    <div><span class="sw band"></span>The Source</div>
+  </div>
+</div>
+
+<div id="fork" role="dialog" aria-labelledby="fork-h">
+  <div class="fork-k">2025 · The record ends here</div>
+  <div class="fork-h" id="fork-h">From here nothing is measured.<br>Choose a road.</div>
+  <div class="fork-b">
+    <button class="fbtn closed" data-mode="closed">Closed loop<small>a share is paid back</small></button>
+    <button class="fbtn open" data-mode="open">Open loop<small>nothing returns</small></button>
+  </div>
 </div>
 
 <div id="ledger">
@@ -365,12 +439,9 @@
 
 <div id="controls">
   <button class="btn" id="bp">Pause</button>
-  <button class="btn" id="bs">Slow</button>
-  <button class="btn active" id="bn">Normal</button>
-  <button class="btn" id="bf">Fast</button>
   <button class="btn" id="br">Reset</button>
-  <button class="btn" id="bm">Sound On</button>
   <button class="btn" id="bo">Loop: Closed</button>
+  <span id="hint">Tap a card or press Space to pause</span>
 </div>
 
 <script>
@@ -445,7 +516,7 @@ function phaseFor(y) {
 }
 function labelFor(p) {
   const y = Math.min(2044, Math.floor(progressToYear(p)));
-  if (p >= 1.0) {
+  if (p > 1.0) {
     if (loopMode === 'open') return (p >= 1.86 ? 'The Loop Is Still Open' : 'Open Loop') + ' · ' + y;
     if (p >= 1.86) return 'The Loop Closes · 2044';
     return phaseFor(y) + ' · ' + y;
@@ -823,7 +894,7 @@ const ANN_CLOSED = [
     right:  { body: 'Current is the currency.\nCurrere: to run, to flow.\nThe Dividend is the\nmechanism that converts\na drain into a current.' },
   },
   {
-    p: 1.86, window: 0.12,
+    p: 1.86, window: 0.15,
     center: { year: '2044', title: 'The Loop Closes', fact: 'A closed economic loop.\nThe substrate is compensated.\nThe open loop\nis a memory.' },
     left:   { body: 'The bore — always\nbreathing in, never out —\nbegins to exhale.\nThe fermata resolves.\nThe torus is complete.' },
     right:  { body: 'Beautiful.\nThe form showed\nwhere the loop had to go.\nThe line item decided\nhow it got there.' },
@@ -844,12 +915,26 @@ const ANN_OPEN = [
     right:  { body: 'Fracture, not closure.\nThe source breaks\ninto walled pieces,\nrationed by whoever\nbuilds the walls.' },
   },
   {
-    p: 1.86, window: 0.12,
+    p: 1.86, window: 0.15,
     center: { year: '2044', title: 'The Loop Is Still Open', fact: 'The geometry still\npoints to closure.\nNo one turned the screw.' },
     left:   { body: 'Source band\nnear zero.\nThe same form.\nNo return path.' },
     right:  { body: 'A decade spent\nwhere a line item\nwould have done.\nToggle the loop\nto see the other road.' },
   },
 ];
+
+// ═══════════════════════════════════════════════════════════════
+//  PACING — a reading rhythm, not a constant clock.
+//  While a card is on screen the clock slows so every card holds for READ_S
+//  seconds at Normal; between cards the torus travels quickly.
+// ═══════════════════════════════════════════════════════════════
+const READ_S = 11, TRAVEL = 0.05, PACE_FADE = 0.012;   // one speed: brisk, pause to read
+function paceRate(p) {
+  const list = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
+  for (const a of list) {
+    if (p >= a.p - PACE_FADE && p < a.p + a.window) return (a.window + PACE_FADE) / READ_S;
+  }
+  return TRAVEL;
+}
 
 const RUPTURES = [
   { p: 0.58, col: [255, 220, 160] },                    // ChatGPT — gold flash
@@ -863,12 +948,14 @@ const RUPTURES = [
 // ═══════════════════════════════════════════════════════════════
 const btns = {
   pause: document.getElementById('bp'),
-  slow: document.getElementById('bs'),
-  normal: document.getElementById('bn'),
-  fast: document.getElementById('bf'),
   reset: document.getElementById('br'),
   mode: document.getElementById('bo')
 };
+const forkEl = document.getElementById('fork');
+const ramsEl = document.getElementById('rams');
+const ramsNow = document.getElementById('rams-now');
+let forkShown = false;
+const PANELS = [];   // card rectangles drawn this frame — tap one to pause
 const slider = document.getElementById('timeline-slider');
 const tlLabel = document.getElementById('tl-label');
 const divEl = document.getElementById('dividend-indicator');
@@ -882,15 +969,23 @@ function setPaused(v) {
   btns.pause.classList.toggle('active', paused);
   if (audioCtx && audioRunning) { paused ? audioCtx.suspend() : audioCtx.resume(); }
 }
-function clearSpeed() {
-  ['slow','normal','fast'].forEach(k => btns[k].classList.remove('active'));
+function setMode(m) {
+  loopMode = m;
+  btns.mode.textContent = loopMode === 'closed' ? 'Loop: Closed' : 'Loop: Open';
+  btns.mode.classList.toggle('open', loopMode === 'open');
 }
+function hideFork() { forkEl.classList.remove('show'); }
+function togglePause() { hideFork(); setPaused(!paused); }
 
-btns.pause.addEventListener('click', () => setPaused(!paused));
-btns.slow.addEventListener('click', function() { speed = 0.25; clearSpeed(); this.classList.add('active'); });
-btns.normal.addEventListener('click', function() { speed = 1.0; clearSpeed(); this.classList.add('active'); });
-btns.fast.addEventListener('click', function() { speed = 4.0; clearSpeed(); this.classList.add('active'); });
+btns.pause.addEventListener('click', togglePause);
+window.addEventListener('keydown', e => {
+  if (e.code === 'Space' && !/INPUT|BUTTON|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); togglePause(); }
+});
+forkEl.querySelectorAll('.fbtn').forEach(b => b.addEventListener('click', () => {
+  setMode(b.dataset.mode); hideFork(); setPaused(false);
+}));
 btns.reset.addEventListener('click', () => {
+  forkShown = false; hideFork(); ramsEl.classList.remove('compact');
   progress = 0; prevProgress = 0; time = 0; ringAlpha = 0;
   dpShown = 0; healthShown = 1; sweepU = 0;
   scrubbing = false;
@@ -898,11 +993,7 @@ btns.reset.addEventListener('click', () => {
   parts.forEach(p => { resetP(p); p.life = Math.random() * p.maxLife; });
   setPaused(false);
 });
-btns.mode.addEventListener('click', () => {
-  loopMode = loopMode === 'closed' ? 'open' : 'closed';
-  btns.mode.textContent = loopMode === 'closed' ? 'Loop: Closed' : 'Loop: Open';
-  btns.mode.classList.toggle('open', loopMode === 'open');
-});
+btns.mode.addEventListener('click', () => setMode(loopMode === 'closed' ? 'open' : 'closed'));
 
 slider.addEventListener('input', () => {
   scrubbing = true;
@@ -911,9 +1002,15 @@ slider.addEventListener('input', () => {
   scrubbing = true;
 });
 
-// Mouse rotation
-c.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
-window.addEventListener('mouseup', () => dragging = false);
+// Mouse rotation; a click on a card (no drag) pauses
+let downX = 0, downY = 0;
+const onCard = (x, y) => PANELS.some(([px, py, pw, ph]) => x >= px && x <= px + pw && y >= py && y <= py + ph);
+c.addEventListener('mousedown', e => { dragging = true; lastX = downX = e.clientX; lastY = downY = e.clientY; });
+window.addEventListener('mouseup', e => {
+  if (dragging && Math.hypot(e.clientX - downX, e.clientY - downY) < 5 && onCard(e.clientX, e.clientY)) togglePause();
+  dragging = false;
+});
+c.addEventListener('mousemove', e => { if (!dragging) c.style.cursor = onCard(e.clientX, e.clientY) ? 'pointer' : 'grab'; });
 window.addEventListener('mousemove', e => {
   if (!dragging) return;
   rotY += (e.clientX - lastX) * 0.006;
@@ -927,10 +1024,14 @@ window.addEventListener('mousemove', e => {
 c.addEventListener('touchstart', e => {
   e.preventDefault();
   dragging = true;
-  lastX = e.touches[0].clientX;
-  lastY = e.touches[0].clientY;
+  lastX = downX = e.touches[0].clientX;
+  lastY = downY = e.touches[0].clientY;
 }, { passive: false });
-window.addEventListener('touchend', () => dragging = false);
+window.addEventListener('touchend', e => {
+  const t = e.changedTouches && e.changedTouches[0];
+  if (dragging && t && Math.hypot(t.clientX - downX, t.clientY - downY) < 8 && onCard(t.clientX, t.clientY)) togglePause();
+  dragging = false;
+});
 window.addEventListener('touchmove', e => {
   if (!dragging) return;
   e.preventDefault();
@@ -967,7 +1068,7 @@ function draw(ts) {
 
   if (!paused) {
     rotY += dt * 0.055;
-    progress = Math.min(P_END, progress + dt * 0.0025);
+    progress = Math.min(P_END, progress + dt * paceRate(progress));
   }
 
   // ── Derived state — eased so the loop toggle reads as a transition, not a cut ──
@@ -975,6 +1076,19 @@ function draw(ts) {
   dpShown += (dividendTarget(progress) - dpShown) * ease;
   healthShown += (sourceHealthTarget(progress) - healthShown) * ease;
   Ledger.update(progress, healthShown);
+  // The record ends at 2025: stop and ask which road
+  if (!paused && !scrubbing && !forkShown && prevProgress < 1.0 && progress >= 1.0) {
+    forkShown = true; progress = 1.0; setPaused(true); forkEl.classList.add('show');
+  }
+  // Placard: full at the start, compact once the first card has passed
+  ramsEl.classList.toggle('compact', progress > 0.13);
+  {
+    const now = progress <= 1.0 ? 'The record · measured'
+      : (loopMode === 'closed' ? 'Closed road · drawn, not measured' : 'Open road · drawn, not measured');
+    if (ramsNow.textContent !== now) ramsNow.textContent = now;
+    ramsNow.classList.toggle('closed', progress > 1.0 && loopMode === 'closed');
+    ramsNow.classList.toggle('open', progress > 1.0 && loopMode === 'open');
+  }
   if (prevProgress < 0.35 && progress >= 0.35) ringAlpha = 0.85;
   prevProgress = progress;
   if (ringAlpha > 0) ringAlpha = Math.max(0, ringAlpha - raw * 0.4);
@@ -998,9 +1112,11 @@ function draw(ts) {
   divEl.classList.toggle('open', loopMode === 'open');
 
   const W = window.innerWidth, H = window.innerHeight;
-  const scale = Math.min(W, H) * 0.30;
+  const narrow0 = W < 900;
+  const scale = Math.min(W, H) * (narrow0 ? 0.30 : 0.27);
   const narrow = W < 900;
-  const cx = narrow ? W * 0.50 : W * 0.38;
+  const cx = narrow ? W * 0.50 : W * 0.42;
+  const SIDE = narrow ? 1.08 : 1.22;   // cards sit on translucent panels, so they may overlap the torus edge
   const cy = narrow ? Math.min(H * 0.42, 260) : H * 0.50;
 
   // ── Particle motion ──
@@ -1236,13 +1352,13 @@ function draw(ts) {
       const ls = Math.max(7, Math.floor(scale * 0.032));
       ctx.font = `500 ${ls}px Inter, sans-serif`;
       if ('letterSpacing' in ctx) ctx.letterSpacing = Math.round(ls * 0.5) + 'px';
-      ctx.fillStyle = `rgba(242,226,198,${0.22 + 0.25 * Math.min(1, healthShown)})`;
+      ctx.fillStyle = `rgba(242,226,198,${0.45 + 0.3 * Math.min(1, healthShown)})`;
       ctx.fillText('THE SOURCE', labelPt[0], labelPt[1] + 12);
       {
         const ss = Math.max(6, Math.floor(ls * 0.8));
         ctx.font = `300 ${ss}px Inter, sans-serif`;
         if ('letterSpacing' in ctx) ctx.letterSpacing = Math.round(ss * 0.3) + 'px';
-        ctx.fillStyle = 'rgba(200,190,170,0.30)';
+        ctx.fillStyle = 'rgba(210,200,178,0.55)';
         const sub = SOURCE_IS_ILLUSTRATIVE ? 'ILLUSTRATIVE INDEX'
           : progress <= 1.0
             ? 'INDEX ' + healthShown.toFixed(2) + ' · 4 MEASURED PROXIES'
@@ -1336,17 +1452,31 @@ function draw(ts) {
     }
   });
 
-  // ── Annotations ──
+  // ── Annotations — three cards on translucent panels ──
   const ANN_FADE = 0.012;
   const active = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
-  const warm = (a) => `rgba(215,205,180,${a})`;
-  const cool = (a) => `rgba(175,185,200,${a})`;
-  const mid  = (a) => `rgba(175,168,148,${a})`;
-  const yearSize  = Math.max(7,  Math.floor(scale * 0.042));
-  const titleSize = Math.max(10, Math.floor(scale * 0.068));
-  const headSize  = Math.max(7,  Math.floor(scale * 0.044));
-  const bodySize  = Math.max(6,  Math.floor(scale * 0.038));
-  const lineH     = bodySize * 1.68;
+  const warm = (a) => `rgba(222,212,188,${a})`;
+  const cool = (a) => `rgba(185,196,212,${a})`;
+  const mid  = (a) => `rgba(200,192,172,${a})`;
+  const yearSize  = Math.max(11, Math.floor(scale * 0.050));
+  const titleSize = Math.max(17, Math.floor(scale * 0.090));
+  const headSize  = Math.max(11, Math.floor(scale * 0.054));
+  const bodySize  = Math.max(13, Math.floor(scale * 0.062));
+  const lineH     = bodySize * 1.5;
+  const PAD       = Math.round(bodySize * 1.05);
+  PANELS.length = 0;
+  const widest = (lines) => lines.reduce((m, l) => Math.max(m, ctx.measureText(l).width), 0);
+  function panel(x, y, w, h, a) {
+    ctx.save();
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, y, w, h, 3); else ctx.rect(x, y, w, h);
+    ctx.fillStyle = `rgba(9,9,7,${0.68 * a})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(195,175,115,${0.18 * a})`;
+    ctx.lineWidth = 1; ctx.stroke();
+    ctx.restore();
+    if (a > 0.5) PANELS.push([x, y, w, h]);
+  }
 
   active.forEach(ann => {
     const w = ann.window || 0.10;
@@ -1360,68 +1490,67 @@ function draw(ts) {
 
     if (ann.center) {
       const c2 = ann.center;
-      const factsLines = c2.fact.split('\n');
-      const factY = cy + scale * 0.78;
+      const lines = c2.fact.split('\n');
+      const factY = cy + scale * 0.66;
+      const yearTxt = ann.p >= 1.0 ? c2.year + ' · Scenario' : c2.year;
       ctx.save();
+      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
+      let bw = widest(lines);
+      ctx.font = `400 ${titleSize}px Inter, sans-serif`;
+      bw = Math.max(bw, ctx.measureText(c2.title).width);
+      const titleY2 = factY + yearSize * 1.4;
+      const ruleY = titleY2 + titleSize * 1.3;
+      const bodyY = ruleY + bodySize * 0.8;
+      const h = (bodyY + lines.length * lineH) - factY + PAD * 1.6;
+      panel(cx - bw / 2 - PAD * 1.4, factY - PAD, bw + PAD * 2.8, h, alpha);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.font = `300 ${yearSize}px Inter, sans-serif`;
-      ctx.fillStyle = warm(alpha * 0.45);
-      ctx.fillText(ann.p >= 1.0 ? c2.year + ' · Scenario' : c2.year, cx, factY);
-      const titleY2 = factY + yearSize * 1.35;
+      ctx.font = `400 ${yearSize}px Inter, sans-serif`;
+      ctx.fillStyle = warm(alpha * 0.62);
+      ctx.fillText(yearTxt, cx, factY);
       ctx.font = `400 ${titleSize}px Inter, sans-serif`;
-      ctx.fillStyle = warm(alpha * 0.92);
+      ctx.fillStyle = warm(alpha * 0.97);
       ctx.fillText(c2.title, cx, titleY2);
-      const ruleY = titleY2 + titleSize * 1.3;
       const rw = scale * 0.12;
-      ctx.strokeStyle = warm(alpha * 0.20);
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = warm(alpha * 0.25);
+      ctx.lineWidth = 0.6;
       ctx.beginPath(); ctx.moveTo(cx - rw, ruleY); ctx.lineTo(cx + rw, ruleY); ctx.stroke();
       ctx.font = `300 ${bodySize}px Inter, sans-serif`;
-      ctx.fillStyle = mid(alpha * 0.68);
-      factsLines.forEach((line, i) => ctx.fillText(line, cx, ruleY + bodySize * 0.9 + i * lineH));
+      ctx.fillStyle = mid(alpha * 0.92);
+      lines.forEach((line, i) => ctx.fillText(line, cx, bodyY + i * lineH));
       ctx.restore();
     }
 
-    if (ann.left) {
-      const lx = cx - scale * 1.08;
-      const ly = cy - scale * 0.26;
-      const bodyLines = ann.left.body.split('\n');
+    const side = (body, head, x, align, color) => {
+      const y = cy - scale * 0.30;
+      const lines = body.split('\n');
       ctx.save();
-      ctx.textAlign = 'right';
+      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
+      const bw = Math.max(widest(lines), scale * 0.5);
+      const h = headSize * 1.9 + lines.length * lineH + PAD * 1.6;
+      const px = align === 'right' ? x - bw - PAD : x - PAD;
+      panel(px, y - PAD, bw + PAD * 2, h, alpha);
+      ctx.textAlign = align;
       ctx.textBaseline = 'top';
       ctx.font = `500 ${headSize}px Inter, sans-serif`;
-      ctx.fillStyle = cool(alpha * 0.60);
-      ctx.fillText('Geometry', lx, ly);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+      ctx.fillStyle = color(alpha * 0.85);
+      ctx.fillText(head.toUpperCase(), x, y);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
       const rw = scale * 0.12;
-      ctx.strokeStyle = cool(alpha * 0.18);
-      ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(lx - rw, ly + headSize * 1.35); ctx.lineTo(lx, ly + headSize * 1.35); ctx.stroke();
+      ctx.strokeStyle = color(alpha * 0.25);
+      ctx.lineWidth = 0.6;
+      const ry = y + headSize * 1.4;
+      ctx.beginPath();
+      if (align === 'right') { ctx.moveTo(x - rw, ry); ctx.lineTo(x, ry); } else { ctx.moveTo(x, ry); ctx.lineTo(x + rw, ry); }
+      ctx.stroke();
       ctx.font = `300 ${bodySize}px Inter, sans-serif`;
-      ctx.fillStyle = cool(alpha * 0.55);
-      bodyLines.forEach((line, i) => ctx.fillText(line, lx, ly + headSize * 1.8 + i * lineH));
+      ctx.fillStyle = color === cool ? cool(alpha * 0.9) : mid(alpha * 0.92);
+      lines.forEach((line, i) => ctx.fillText(line, x, y + headSize * 1.9 + i * lineH));
       ctx.restore();
-    }
-
-    if (ann.right) {
-      const rx = cx + scale * 1.08;
-      const ry = cy - scale * 0.26;
-      const bodyLines = ann.right.body.split('\n');
-      ctx.save();
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.font = `500 ${headSize}px Inter, sans-serif`;
-      ctx.fillStyle = warm(alpha * 0.60);
-      ctx.fillText('Substrate', rx, ry);
-      const rw = scale * 0.12;
-      ctx.strokeStyle = warm(alpha * 0.18);
-      ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(rx, ry + headSize * 1.35); ctx.lineTo(rx + rw, ry + headSize * 1.35); ctx.stroke();
-      ctx.font = `300 ${bodySize}px Inter, sans-serif`;
-      ctx.fillStyle = mid(alpha * 0.62);
-      bodyLines.forEach((line, i) => ctx.fillText(line, rx, ry + headSize * 1.8 + i * lineH));
-      ctx.restore();
-    }
+    };
+    if (ann.left)  side(ann.left.body,  'Geometry',  cx - scale * SIDE, 'right', cool);
+    if (ann.right) side(ann.right.body, 'Substrate', cx + scale * SIDE, 'left',  warm);
   });
 
   // ── Title — closed loop only, fades in with the Dividend ──
@@ -1452,10 +1581,10 @@ function draw(ts) {
       ctx.fillText('Toroidal geometry applied to the flow of an extractive economy, over time.', cx, titleY + ts2 * 1.55);
     }
     if (dp > 0.35) {
-      const subAlpha = Math.pow((dp - 0.35) / 0.65, 2.0) * 0.30;
-      const subSize = Math.max(6, Math.floor(scale * 0.036));
+      const subAlpha = Math.pow((dp - 0.35) / 0.65, 2.0) * 0.78;
+      const subSize = Math.max(11, Math.floor(scale * 0.052));
       ctx.font = `300 ${subSize}px Inter, sans-serif`;
-      ctx.fillStyle = `rgba(140,155,180,${subAlpha})`;
+      ctx.fillStyle = `rgba(185,205,235,${subAlpha})`;
       ctx.textAlign = 'center';
       ctx.fillText('Current is the currency.', cx, titleY + ts2 * 1.55 + Math.max(6, Math.floor(scale * 0.040)) * 2.4);
     }
@@ -1591,18 +1720,7 @@ function stopAudioEngine() {
   audioRunning = false;
 }
 
-document.getElementById('bm').addEventListener('click', function() {
-  audioMuted = !audioMuted;
-  if (!audioMuted) {
-    this.textContent = 'Mute';
-    this.classList.add('active');
-    startAudioEngine();
-  } else {
-    this.textContent = 'Sound On';
-    this.classList.remove('active');
-    stopAudioEngine();
-  }
-});
+// Sound control removed from the bar (22 Nov 2026); the ambient engine above is kept for later.
 </script>
 </body>
 </html>

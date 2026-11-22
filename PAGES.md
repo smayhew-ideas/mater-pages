@@ -26,6 +26,9 @@ All under https://smayhew-ideas.github.io/mater-pages/stills/
 - torus-open-fracture-2026-11-22.png, torus-2044-closed-currency-2026-11-22.png (Model wording: "closed" = return path only; "Current is the currency.")
 - torus-ledger-2024-measured-2026-11-22.png, torus-ledger-2044-closed-2026-11-22.png, torus-ledger-2044-open-2026-11-22.png (Model: Source Index panel, measured vs. drawn; bottom bar re-laid out)
 - scissors-2026-11-22.png, method-values-2026-11-22.png (Stack Overflow re-pulled from the Stack Exchange API: 2024 index 0.63, 2022 0.97)
+- torus-ledger-note-plain-2026-11-22.png (plainer note on drawn scenarios)
+- torus-legible-2024/2044-closed/2044-open-2026-11-22.png (visibility pass)
+- torus-cards-start/2022-shrug/fork/2044-closed/2044-open/2030-open-1280-2026-11-22.png (one speed, paneled cards, Mater placard, fork at 2025, stronger bottom bar)
 
 Add new dated stills as the work changes. Don't overwrite old ones.
 

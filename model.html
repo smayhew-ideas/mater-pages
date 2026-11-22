@@ -272,7 +272,7 @@
 
 <div id="rams">
   <div class="rams-title">The Economic Torus</div>
-  <div class="rams-line">A model of how an extractive AI economy<br>closes its loop — by design, or by fracture.</div>
+  <div class="rams-line">A model of how an extractive AI economy<br>either closes its loop by design, or fractures.</div>
   <div class="rams-line" style="margin-top:8px;opacity:0.6;">Toroidal geometry applied to the flow<br>of an extractive economy, over time.</div>
   <div class="rams-line" style="margin-top:8px;opacity:0.5;">To 2025: the record. After 2025: two scenarios.</div>
 </div>
@@ -380,7 +380,7 @@ function labelFor(p) {
 }
 function indicatorFor(p) {
   if (p >= 1.86) return loopMode === 'closed' ? '2044 · The Loop Is Closed' : '2044 · No Return Path · The Gibson Years';
-  if (p > 1.0)   return loopMode === 'closed' ? 'The Blue Arc · The Return Path' : 'No Return Path · Closure by Fracture';
+  if (p > 1.0)   return loopMode === 'closed' ? 'The Blue Arc · The Return Path' : 'No Return Path · Fracture';
   if (p >= 0.91) return '2025 · The Loop Is Open';
   return '';
 }
@@ -613,7 +613,7 @@ const ANN_CLOSED = [
     p: 1.58, window: 0.25,
     center: { year: '2040–44', title: 'Inference', fact: 'Usage tax scales with\ninference volume.\nAs AI industry grows,\nDividend grows proportionally.\nThe loop approaches closure.' },
     left:   { body: 'Gold and blue arcs\nin balance.\nThe Source band thicker\nthan where it began.\nNeither extraction\nnor return — just current.' },
-    right:  { body: 'Current as currency.\nCurrere: to run, to flow.\nThe Dividend is the\nmechanism that converts\na drain into a current.' },
+    right:  { body: 'Current is the currency.\nCurrere: to run, to flow.\nThe Dividend is the\nmechanism that converts\na drain into a current.' },
   },
   {
     p: 1.86, window: 0.12,
@@ -634,7 +634,7 @@ const ANN_OPEN = [
     p: 1.40, window: 0.36,
     center: { year: '2035–43', title: 'Enclosure', fact: 'Trust becomes a premium.\nPrivate vaults. Walled enclaves.\nTo be known accurately\nis sold back as a service.' },
     left:   { body: 'The bore keeps drawing.\nNothing returns\nto the Source.\nThe spiral dims —\nit climbs on\ndegraded material.' },
-    right:  { body: 'Closure by fracture.\nThe loop closes anyway,\nin pieces,\nrationed by whoever\nbuilds the walls.' },
+    right:  { body: 'Fracture, not closure.\nThe source breaks\ninto walled pieces,\nrationed by whoever\nbuilds the walls.' },
   },
   {
     p: 1.86, window: 0.12,
@@ -1249,7 +1249,7 @@ function draw(ts) {
       ctx.font = `300 ${subSize}px Inter, sans-serif`;
       ctx.fillStyle = `rgba(140,155,180,${subAlpha})`;
       ctx.textAlign = 'center';
-      ctx.fillText('The loop closes by design, or by fracture.', cx, titleY + ts2 * 1.55 + Math.max(6, Math.floor(scale * 0.040)) * 2.4);
+      ctx.fillText('Current is the currency.', cx, titleY + ts2 * 1.55 + Math.max(6, Math.floor(scale * 0.040)) * 2.4);
     }
     ctx.restore();
   }

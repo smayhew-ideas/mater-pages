@@ -9,7 +9,7 @@ Published: November 11, 2026. Stills added November 13, 2026.
 | Page | Address | What it is |
 |---|---|---|
 | Index | /mater-pages/ | Plain list so the root isn't blank. Framer becomes the real front door. |
-| We Are the Source | /letter.html | Open letter v3.1 (19 Nov 2026): 07 "A Framework to Test", Klepper "no they" bookend in 08 |
+| We Are the Source | /letter.html | Open letter v3.2 (22 Nov 2026): Point 06 scenario wording — the loop closes by design, or the source fractures |
 | The Scissors | /scissors.html | Figure 1: training data drawn vs. Source index, 2015–2025 |
 | How the Source index is built | /method.html | Method note: four proxies, values, caveats |
 | The Economic Torus | /model.html | The model (SpiralTorus_02): measured to 2025, two scenarios to 2044 |
@@ -22,7 +22,8 @@ All under https://smayhew-ideas.github.io/mater-pages/stills/
 - letter-cover.png, letter-mechanism.png
 - torus-2025-open.png, torus-2044-closed.png, torus-2044-open.png
 - scissors.png, carriers.png, index.png
-- letter-point01-2026-11-18.png (cover removed), letter-v3-2026-11-19.png, letter-v3.1-2026-11-19.png
+- letter-point01-2026-11-18.png (cover removed), letter-v3-2026-11-19.png, letter-v3.1-2026-11-19.png, letter-v3.2-06-2026-11-22.png
+- torus-open-fracture-2026-11-22.png, torus-2044-closed-currency-2026-11-22.png (Model wording: "closed" = return path only; "Current is the currency.")
 
 Add new dated stills as the work changes. Don't overwrite old ones.
 

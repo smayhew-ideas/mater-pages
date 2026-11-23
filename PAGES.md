@@ -32,6 +32,7 @@ All under https://smayhew-ideas.github.io/mater-pages/stills/
 - torus-fork-you-are-here-2026-11-22.png, torus-if-we-do-nothing-2030-2026-11-22.png (fork reworded: "If we do nothing, the loop stays open. Closing it has to be chosen.")
 - torus-square-start/2022-shrug/fork/2044-closed/2044-open/2030-open-1280-2026-11-22.png, torus-mater-named-2044-2026-11-22.png (design pass: Michroma + Saira, frosted panels with corner marks, slow fades, quiet controls; the band is named MATER on the closed road)
 - torus-cyan-2022-shrug/2044-closed/fork/phone/phone-se/phone-fork/tablet-2026-11-22.png (cyan accent; phone and tablet layout; run back to ~3 min)
+- torus-fit-ipad129-land/ipad-odd/ipad129-port-2026-11-22.png (iPad fix: size from the displayed canvas, re-measure on rotation; cards fit at in-between widths)
 
 Add new dated stills as the work changes. Don't overwrite old ones.
 

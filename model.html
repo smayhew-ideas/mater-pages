@@ -17,7 +17,7 @@
 
   #c {
     position: fixed; inset: 0;
-    width: 100vw; height: 100vh;
+    width: 100%; height: 100%;
     display: block;
   }
 
@@ -407,6 +407,8 @@
     .fork-h { font-size: 17px !important; }
     .fork-b { flex-wrap: wrap; }
   }
+  /* In-between widths (small laptops, iPad landscape): keep the Source Index chart, drop its note */
+  @media (min-width: 901px) and (max-width: 1299px) { .lg-note { display: none; } #hint { display: none; } }
 </style>
 </head>
 <body>
@@ -500,16 +502,21 @@ const c = document.getElementById('c');
 const ctx = c.getContext('2d');
 const yearEl = document.getElementById('year');
 
+// Size from the canvas as actually displayed (iPad Safari can report a stale window size after rotation)
+let viewW = 0, viewH = 0;
 function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  c.width = Math.floor(window.innerWidth * dpr);
-  c.height = Math.floor(window.innerHeight * dpr);
-  c.style.width = window.innerWidth + 'px';
-  c.style.height = window.innerHeight + 'px';
+  const r = c.getBoundingClientRect();
+  viewW = Math.round(r.width) || window.innerWidth;
+  viewH = Math.round(r.height) || window.innerHeight;
+  c.width = Math.floor(viewW * dpr);
+  c.height = Math.floor(viewH * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 resize();
 window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 250); setTimeout(resize, 800); });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
 
 function project(x, y, z, cx, cy, rX, rY, scale) {
   const cosY = Math.cos(rY), sinY = Math.sin(rY);
@@ -1149,13 +1156,20 @@ function draw(ts) {
   }
   divEl.classList.toggle('open', loopMode === 'open');
 
-  const W = window.innerWidth, H = window.innerHeight;
-  const narrow0 = W < 900;
-  const scale = narrow0 ? Math.min(W * 0.30, H * 0.22) : Math.min(W, H) * 0.27;
+  if (Math.abs(c.clientWidth - viewW) > 1 || Math.abs(c.clientHeight - viewH) > 1) resize();
+  const W = viewW, H = viewH;
   const narrow = W < 900;
-  const cx = narrow ? W * 0.50 : W * 0.42;
   const SIDE = narrow ? 1.08 : 1.46;   // side cards clear the torus (~1.36 × scale) so the spiral stays whole
-  const cy = narrow ? Math.max(H * 0.30, 210) : H * 0.50;
+  const CARD_W = 255;                  // room a side card needs, with margin
+  const cx = narrow ? W * 0.50 : (W >= 1300 ? W * 0.42 : W * 0.50);
+  const scale = narrow
+    ? Math.min(W * 0.30, H * 0.22)
+    : Math.max(110, Math.min(
+        Math.min(W, H) * 0.27,
+        (cx - 24 - CARD_W) / SIDE,              // left card fits on screen
+        (W - cx - 24 - CARD_W) / SIDE,          // right card fits on screen
+        (0.53 * H - 265) / 0.66));              // centre card clears the bottom bar
+  const cy = narrow ? Math.max(H * 0.30, 210) : H * 0.47;
 
   // ── Particle motion ──
   if (!paused) {

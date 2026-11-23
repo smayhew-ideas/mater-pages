@@ -965,14 +965,16 @@ const ANN_OPEN = [
 const FD = "Michroma, 'Eurostile', 'Square 721 Extended', sans-serif";   // display: square, wide
 const FB = "Saira, 'Eurostile', sans-serif";                               // body: square, light
 const CYAN = (a) => `rgba(104,212,224,${a})`;                               // accent: chrome, codes, marks
-const READ_S = 8, TRAVEL = 0.06, PACE_FADE = 0.012;    // one speed: brisk, pause to read
-const CARD_FADE_T = 0.7;   // seconds; cards ease in and out over about 2 s
+const READ_S = 12, TRAVEL = 0.03, PACE_FADE = 0.012;   // one speed: brisk, pause to read
+const CARD_FADE_T = 0.75;  // seconds; cards ease in and out over about 2 s
+const CARD_MIN_S = 9;      // a card stays up at least this long, even if the spiral moves on
+let cardClock = 0, shownCard = null;
+// The spiral never waits on the cards: this is only a target speed, and the actual
+// speed eases toward it (PACE_EASE_T), so the glow slows and quickens without stops or jumps.
+const PACE_EASE_T = 1.6;          // seconds
+let paceR = TRAVEL;               // current, eased speed (progress per second)
 function paceRate(p) {
   const list = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
-  for (const a of list) {
-    const inside = p >= a.p && p <= a.p + a.window;
-    if (!inside && (a._a || 0) > 0.04) return 0;   // let the last card finish fading before moving on
-  }
   for (const a of list) {
     if (p >= a.p - PACE_FADE && p < a.p + a.window) return (a.window + PACE_FADE) / READ_S;
   }
@@ -1029,6 +1031,7 @@ forkEl.querySelectorAll('.fbtn').forEach(b => b.addEventListener('click', () => 
 }));
 btns.reset.addEventListener('click', () => {
   forkShown = false; hideFork(); ramsEl.classList.remove('compact'); setMode('open');
+  paceR = TRAVEL; shownCard = null;
   progress = 0; prevProgress = 0; time = 0; ringAlpha = 0;
   dpShown = 0; healthShown = 1; sweepU = 0;
   scrubbing = false;
@@ -1111,7 +1114,8 @@ function draw(ts) {
 
   if (!paused) {
     rotY += dt * 0.055;
-    progress = Math.min(P_END, progress + dt * paceRate(progress));
+    paceR += (paceRate(progress) - paceR) * (1 - Math.exp(-dt / PACE_EASE_T));
+    progress = Math.min(P_END, progress + dt * paceR);
   }
 
   // ── Derived state — eased so the loop toggle reads as a transition, not a cut ──
@@ -1524,10 +1528,23 @@ function draw(ts) {
   // ── Annotations — three cards on soft frosted panels; time-based fades ──
   const active = ANN_COMMON.concat(loopMode === 'closed' ? ANN_CLOSED : ANN_OPEN);
   const allAnn = ANN_COMMON.concat(ANN_CLOSED, ANN_OPEN);
-  const kFade = 1 - Math.exp(-raw / CARD_FADE_T);
+  // Cards run on their own clock: one card at a time, each held at least CARD_MIN_S,
+  // the next fading in only after the last has faded out. The spiral is never held for them.
+  if (!paused) cardClock += raw;
+  {
+    let inWin = null;
+    for (const a of active) if (progress >= a.p && progress <= a.p + (a.window || 0.10)) inWin = a;
+    if (inWin && inWin !== shownCard) { shownCard = inWin; inWin._t0 = cardClock; }
+    else if (!inWin && shownCard && (!active.includes(shownCard) || cardClock - shownCard._t0 > CARD_MIN_S
+             || progress < shownCard.p)) shownCard = null;
+  }
+  const kIn  = 1 - Math.exp(-raw / CARD_FADE_T);
+  const kOut = 1 - Math.exp(-raw / (CARD_FADE_T * 0.75));
+  const othersVisible = allAnn.some(a => a !== shownCard && (a._a || 0) > 0.06);
   allAnn.forEach(a => {
-    const on = active.includes(a) && progress >= a.p && progress <= a.p + (a.window || 0.10);
-    a._a = (a._a || 0) + ((on ? 1 : 0) - (a._a || 0)) * kFade;
+    const cur = a._a || 0;
+    if (a === shownCard) a._a = othersVisible ? cur : cur + (1 - cur) * kIn;
+    else a._a = cur - cur * kOut;
   });
   const warm = (a) => `rgba(228,220,200,${a})`;
   const cool = (a) => `rgba(196,206,220,${a})`;

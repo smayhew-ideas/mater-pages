@@ -409,6 +409,7 @@
   }
   /* In-between widths (small laptops, iPad landscape): keep the Source Index chart, drop its note */
   @media (min-width: 901px) and (max-width: 1299px) { .lg-note { display: none; } #hint { display: none; } }
+  #bo:disabled { cursor: default; opacity: 0.75; }
 </style>
 </head>
 <body>
@@ -469,7 +470,7 @@
 <div id="controls">
   <button class="btn" id="bp">Pause</button>
   <button class="btn" id="br">Reset</button>
-  <button class="btn" id="bo">Loop: Closed</button>
+  <button class="btn open" id="bo" disabled title="The record: the loop is open. The choice comes at 2025.">Loop: Open</button>
   <span id="hint">Tap a card or press Space to pause</span>
 </div>
 
@@ -485,7 +486,7 @@ const P_END = 2.0;
 let progress = 0;
 let paused = false, speed = 1.0;
 let scrubbing = false;
-let loopMode = 'closed';   // 'closed' = Dividend path · 'open' = counterfactual, no return path
+let loopMode = 'open';     // default: if we do nothing, the loop stays open · 'closed' has to be chosen at 2025
 let dpShown = 0;           // eased dividend progress (0 → 1)
 let healthShown = 1;       // eased Source health
 let ringAlpha = 0, prevProgress = 0;
@@ -1027,7 +1028,7 @@ forkEl.querySelectorAll('.fbtn').forEach(b => b.addEventListener('click', () => 
   setMode(b.dataset.mode); hideFork(); setPaused(false);
 }));
 btns.reset.addEventListener('click', () => {
-  forkShown = false; hideFork(); ramsEl.classList.remove('compact');
+  forkShown = false; hideFork(); ramsEl.classList.remove('compact'); setMode('open');
   progress = 0; prevProgress = 0; time = 0; ringAlpha = 0;
   dpShown = 0; healthShown = 1; sweepU = 0;
   scrubbing = false;
@@ -1121,6 +1122,15 @@ function draw(ts) {
   // The record ends at 2025: stop and ask which road
   if (!paused && !scrubbing && !forkShown && prevProgress < 1.0 && progress >= 1.0) {
     forkShown = true; progress = 1.0; setPaused(true); forkEl.classList.add('show');
+  }
+  // The toggle is the record (open, locked) until 2025; after that it follows the reader's choice
+  {
+    const locked = progress <= 1.0;
+    if (btns.mode.disabled !== locked) {
+      btns.mode.disabled = locked;
+      btns.mode.title = locked ? 'The record: the loop is open. The choice comes at 2025.' : 'Switch road';
+      if (locked) setMode('open');
+    }
   }
   // Placard: full at the start, compact once the first card has passed
   ramsEl.classList.toggle('compact', progress > 0.13);
